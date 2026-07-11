@@ -322,6 +322,17 @@ const WEAPONS = ["両手剣","片手剣","長柄武器","弓","法器"];
 const CH_BASE = "https://www.youtube.com/results?search_query=";
 
 const DATA = [
+  { name:"サンドローネ", element:"cryo", weapon:"両手剣", role:"メインアタッカー(星電導反応)", release:"Ver6.7 (2026/7)",
+    weapons:[{n:"超越の鍵",t:"signature",note:"攻撃力・星電導ダメージを大幅強化"},{n:"会心系両手剣全般",t:"f2p",note:"攻撃的ステータスを確保できれば代替として十分実用的"}],
+    artifact:{main:"影に沈む幻(4セット)",alt:"ほぼ専用。会心率と星電導ダメージを同時に強化"},
+    mainStats:"時計:攻撃力％ / 杯:攻撃力％(氷元素ダメージはNG) / 冠:会心",
+    stats:[["攻撃力","2300+"],["会心率","65%"],["会心ダメージ","260%"],["元素チャージ効率","110〜130%"]],
+    teams:[
+      {title:"編成①星電導本命", members:["サンドローネ","八重神子","神里綾華","ベネット"]},
+      {title:"編成②万能代替", members:["サンドローネ","雷電将軍","行秋","鍾離"]}
+    ],
+    video:"https://www.youtube.com/watch?v=gHbIpoV-z8c", videoTitle:"サンドローネ完全解説！新元素反応「星電導」が強すぎる", confirmed:true },
+
   { name:"スカーク", element:"cryo", weapon:"片手剣", role:"メインアタッカー(形態変化)", release:"Ver5.7 (2025/6)",
     weapons:[{n:"蒼耀",t:"signature",note:"通常・重撃・元素爆発を総合強化"},{n:"波乱月白経津／海淵のフィナーレ",t:"f2p",note:"会心率・攻撃力確保の代替候補"}],
     artifact:{main:"深廊の終曲(4セット)",alt:"ファントムハンター(フリーナ併用時)"},
