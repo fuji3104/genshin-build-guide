@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>原神 育成コンパス — 各種攻略情報まとめ</title>
+<meta name="description" content="攻略サイトやYouTube解説動画などをもとにした、原神キャラクターの理想ステータス・おすすめ聖遺物・武器・深境螺旋編成まとめ">
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  :root{
+    --bg: #f4f4f8;
+    --surface: #ffffff;
+    --surface-2: #ececf3;
+    --border: #dcdce6;
+    --text: #1c1d27;
+    --muted: #63637a;
+    --accent: #a9762f;
+    --accent-strong: #8a5f22;
+    --accent-soft: rgba(169,118,47,0.12);
+
+    --pyro: #d94f34;
+    --hydro: #2e86d9;
+    --electro: #8b5fd9;
+    --cryo: #1fa7b0;
+    --dendro: #6a9a2b;
+    --anemo: #2fae94;
+    --geo: #b8862b;
+
+    --shadow: 0 1px 2px rgba(20,20,30,0.04), 0 8px 24px rgba(20,20,30,0.06);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #121319;
+      --surface: #1a1c25;
+      --surface-2: #21232e;
+      --border: #2d2f3d;
+      --text: #ecebf2;
+      --muted: #9997ab;
+      --accent: #d9ad63;
+      --accent-strong: #e8c384;
+      --accent-soft: rgba(217,173,99,0.14);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 28px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #121319; --surface: #1a1c25; --surface-2: #21232e; --border: #2d2f3d;
+    --text: #ecebf2; --muted: #9997ab; --accent: #d9ad63; --accent-strong: #e8c384;
+    --accent-soft: rgba(217,173,99,0.14); --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 28px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"]{
+    --bg: #f4f4f8; --surface: #ffffff; --surface-2: #ececf3; --border: #dcdce6;
+    --text: #1c1d27; --muted: #63637a; --accent: #a9762f; --accent-strong: #8a5f22;
+    --accent-soft: rgba(169,118,47,0.12); --shadow: 0 1px 2px rgba(20,20,30,0.04), 0 8px 24px rgba(20,20,30,0.06);
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap{ max-width: 1180px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ---------- Header ---------- */
+  header.hero{
+    padding: 56px 20px 40px;
+    border-bottom: 1px solid var(--border);
+    background:
+      radial-gradient(ellipse 900px 400px at 15% -10%, var(--accent-soft), transparent 60%),
+      var(--bg);
+  }
+  .hero-inner{ max-width: 1180px; margin:0 auto; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 18px;
+  }
+  .eyebrow::before{
+    content:""; width: 16px; height:1px; background: var(--accent);
+  }
+  h1{
+    font-family: "Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4.2vw, 44px);
+    margin: 0 0 14px;
+    text-wrap: balance;
+    letter-spacing: 0.01em;
+  }
+  .hero p.lead{
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: 15.5px;
+    margin: 0 0 6px;
+  }
+  .source-note{
+    margin-top: 22px;
+    display:flex; flex-wrap:wrap; gap: 10px 28px;
+    font-size: 13px; color: var(--muted);
+  }
+  .source-note strong{ color: var(--text); font-weight: 600; }
+  .source-note a{ color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  .source-note a:hover{ border-color: var(--accent); }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+  }
+  .toolbar-inner{
+    max-width: 1180px; margin: 0 auto;
+    display:flex; flex-wrap: wrap; align-items:center; gap: 12px 16px;
+  }
+  .search-box{
+    display:flex; align-items:center; gap:8px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 8px 12px; flex: 1 1 220px; max-width: 320px;
+  }
+  .search-box svg{ flex:none; opacity:0.55; }
+  .search-box input{
+    border:none; outline:none; background:transparent; color: var(--text);
+    font-size: 14px; width: 100%; font-family: inherit;
+  }
+  .search-box input::placeholder{ color: var(--muted); }
+
+  .chip-row{ display:flex; flex-wrap:wrap; gap: 7px; }
+  .chip{
+    appearance:none; border:1px solid var(--border); background: var(--surface);
+    color: var(--muted); border-radius: 999px; padding: 6px 13px;
+    font-size: 12.5px; font-weight:600; cursor:pointer; font-family:inherit;
+    display:inline-flex; align-items:center; gap:6px; transition: background .15s, color .15s, border-color .15s;
+  }
+  .chip:hover{ border-color: var(--accent); color: var(--text); }
+  .chip[aria-pressed="true"]{
+    background: var(--accent); color: #1a1305; border-color: var(--accent); font-weight:700;
+  }
+  .chip .dot{ width:8px; height:8px; border-radius:50%; }
+  .result-count{ margin-left:auto; font-size:12.5px; color: var(--muted); white-space:nowrap; }
+
+  /* ---------- Grid ---------- */
+  main{ padding-top: 30px; }
+  .grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
+    gap: 18px;
+  }
+  .empty-state{
+    grid-column: 1/-1; text-align:center; padding: 60px 20px; color: var(--muted);
+  }
+
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    border-left: 3px solid var(--el, var(--accent));
+  }
+  .card-head{
+    padding: 16px 18px 12px;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .name-block h2{
+    font-size: 18.5px; margin:0 0 3px; font-weight:700; letter-spacing:0.01em;
+  }
+  .meta-line{
+    font-size: 12.5px; color: var(--muted); display:flex; align-items:center; gap:6px;
+  }
+  .meta-line .el-name{ color: var(--el, var(--accent)); font-weight:700; }
+  .el-icon{
+    width: 34px; height:34px; border-radius:9px; flex:none;
+    background: color-mix(in srgb, var(--el, var(--accent)) 16%, transparent);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .el-icon svg{ width:18px; height:18px; }
+
+  .role-tag{
+    align-self:flex-start; font-size: 11px; font-weight:700; letter-spacing:0.03em;
+    padding: 3px 9px; border-radius:6px; margin-top:2px;
+    background: var(--surface-2); color: var(--muted);
+  }
+
+  .card-body{ padding: 14px 18px 6px; display:flex; flex-direction:column; gap: 12px; flex:1; }
+  .section-label{
+    font-size: 11px; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--el, var(--accent)); font-weight:700; margin-bottom: 5px;
+  }
+  .weapon-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px; }
+  .weapon-list li{ font-size: 13.5px; display:flex; gap:7px; align-items:baseline; }
+  .tier{
+    flex:none; font-size:10px; font-weight:700; padding: 1px 6px; border-radius:5px;
+    background: var(--surface-2); color: var(--muted); line-height:1.5;
+  }
+  .tier.sig{ background: var(--accent-soft); color: var(--accent-strong); }
+  .wname{ font-weight:600; }
+  .wnote{ color: var(--muted); font-size:12px; }
+
+  .artifact-block{ font-size:13.5px; }
+  .artifact-main{ font-weight:700; margin-bottom:2px; }
+  .artifact-alt{ color: var(--muted); font-size:12.5px; }
+
+  .stat-table{ width:100%; border-collapse:collapse; font-size:13px; }
+  .stat-table td{ padding: 3px 0; }
+  .stat-table td:first-child{ color: var(--muted); width: 40%; }
+  .stat-table td:last-child{ text-align:right; font-weight:700; font-variant-numeric: tabular-nums; }
+
+  .main-stats{ display:flex; gap:8px; flex-wrap:wrap; font-size:12px; color:var(--muted); }
+  .main-stats b{ color: var(--text); }
+
+  .team-block{ display:flex; flex-direction:column; gap:8px; }
+  .team-row{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+  .team-tag{
+    flex:none; font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px;
+    background: color-mix(in srgb, var(--el, var(--accent)) 14%, transparent); color: var(--el, var(--accent));
+  }
+  .member-pill{
+    font-size:12px; padding:2px 9px; border-radius:999px;
+    background: var(--surface-2); border:1px solid var(--border); color: var(--muted);
+  }
+  .member-pill.self{
+    background: color-mix(in srgb, var(--el, var(--accent)) 18%, transparent);
+    border-color: var(--el, var(--accent)); color: var(--el, var(--accent)); font-weight:700;
+  }
+
+  .card-foot{
+    margin-top:auto; padding: 12px 18px; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background: var(--surface-2);
+  }
+  .video-link{
+    font-size:12.5px; color: var(--text); text-decoration:none; display:flex; align-items:center; gap:6px;
+    min-width:0;
+  }
+  .video-link span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .video-link:hover{ color: var(--accent); }
+  .video-link svg{ flex:none; }
+  .confidence{
+    flex:none; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:5px; white-space:nowrap;
+  }
+  .confidence.confirmed{ background: color-mix(in srgb, var(--dendro) 18%, transparent); color: var(--dendro); }
+  .confidence.inferred{ background: color-mix(in srgb, var(--muted) 20%, transparent); color: var(--muted); }
+
+  footer{
+    max-width:1180px; margin: 40px auto 0; padding: 24px 20px 0; border-top:1px solid var(--border);
+    color: var(--muted); font-size:12.5px;
+  }
+
+  a{ color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Genshin Impact / 育成データベース</div>
+    <h1>原神 育成コンパス</h1>
+    <p class="lead">攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている原神の育成情報をもとに、人気・主要キャラクター25体の理想ステータス・おすすめ聖遺物・おすすめ武器を一覧にまとめました。各キャラクターには深境螺旋(スパイラルアビス)を想定したおすすめ編成を2パターンずつ掲載しています。実装が新しいキャラクターから順に掲載しています。</p>
+    <div class="source-note">
+      <span><strong>情報源：</strong>ゲーム攻略サイト・YouTube解説動画など、一般に公開されている複数の情報を参照</span>
+      <span>非公式のファンメイドまとめです。ゲームのバージョン更新により最新の解説と数値が異なる場合があります。</span>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search" type="text" placeholder="キャラクター名で検索…" autocomplete="off">
+    </div>
+    <div class="chip-row" id="element-chips"></div>
+    <div class="chip-row" id="weapon-chips"></div>
+    <div class="result-count" id="count"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <p>本サイトは、原神の攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている情報をもとに、編集部にて整理・要約したものです。数値やおすすめ装備は各情報が公開された時点のバージョンに基づくため、実際の最新環境とは異なる場合があります。正確な最新情報は必ず各情報源の一次情報をご確認ください。当サイトはゲーム公式運営および参照先の各サイト・チャンネルとは関係のない非公式のファンサイトです。</p>
+</footer>
+
+<script>
+const ELEMENTS = {
+  pyro:   { label: "炎", color: "var(--pyro)",   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c1 4-3 5-3 9a3 3 0 0 0 6 0c0-1.5-1-2-1-3.5 2 1 3 3.5 3 6a5 5 0 0 1-10 0c0-5 3-6 5-11.5z"/></svg>' },
+  hydro:  { label: "水", color: "var(--hydro)",  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12z"/></svg>' },
+  electro:{ label: "雷", color: "var(--electro)",icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 4 14 11 14 9 22 20 9 13 9"/></svg>' },
+  cryo:   { label: "氷", color: "var(--cryo)",   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="7" x2="20" y2="17"/><line x1="20" y1="7" x2="4" y2="17"/></svg>' },
+  dendro: { label: "草", color: "var(--dendro)", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12M12 12C6 12 4 7 4 3c5 0 8 3 8 9zM12 12c6 0 8-5 8-9-5 0-8 3-8 9z"/></svg>' },
+  anemo:  { label: "風", color: "var(--anemo)",  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h11a3 3 0 1 0-3-3M4 16h13a3 3 0 1 1-3 3M2 12h16a3 3 0 1 0-3-3"/></svg>' },
+  geo:    { label: "岩", color: "var(--geo)",    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 19 21 5 21 2 8.5"/></svg>' },
+};
+const WEAPONS = ["両手剣","片手剣","長柄武器","弓","法器"];
+
+const CH_BASE = "https://www.youtube.com/results?search_query=";
+
+const DATA = [
+  { name:"スカーク", element:"cryo", weapon:"片手剣", role:"メインアタッカー(形態変化)", release:"Ver5.7 (2025/6)",
+    weapons:[{n:"蒼耀",t:"signature",note:"通常・重撃・元素爆発を総合強化"},{n:"波乱月白経津／海淵のフィナーレ",t:"f2p",note:"会心率・攻撃力確保の代替候補"}],
+    artifact:{main:"深廊の終曲(4セット)",alt:"ファントムハンター(フリーナ併用時)"},
+    mainStats:"時計:攻撃力％ / 杯:氷元素ダメージ / 冠:会心",
+    stats:[["会心率","80%"],["会心ダメージ","230%"],["攻撃力","2500+"]],
+    teams:[
+      {title:"編成①凍結特化", members:["スカーク","フリーナ","夜蘭","エスコフィエ"]},
+      {title:"編成②溶解代替", members:["スカーク","香菱","鍾離","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=lu05Q7RyM6o", videoTitle:"知らないと火力減！「スカーク」最新解説", confirmed:true },
+
+  { name:"マーヴィカ", element:"pyro", weapon:"両手剣", role:"メインアタッカー", release:"Ver5.3 (2025/1)",
+    weapons:[{n:"千烈の日輪",t:"signature",note:"攻撃力と会心ダメージを強化"}],
+    artifact:{main:"専用聖遺物4セット",alt:"会心率を大きく補強できる構成"},
+    mainStats:"時計:攻撃力％ / 杯:炎元素ダメージ / 冠:会心",
+    stats:[["攻撃力","2200"],["会心率","60%"],["会心ダメージ","240%"],["元素熟知","100前後(反応込み)"]],
+    teams:[
+      {title:"編成①蒸発型", members:["マーヴィカ","行秋","鍾離","ベネット"]},
+      {title:"編成②溶解型", members:["マーヴィカ","シトラリ","イアンサ","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=uYZb2mJuqkM", videoTitle:"知らないと火力激減！「マーヴィカ」完全解説", confirmed:true },
+
+  { name:"シトラリ", element:"cryo", weapon:"法器", role:"サポート(溶解／凍結)", release:"Ver5.3 (2025/1)",
+    weapons:[{n:"熟知強化系法器",t:"signature",note:"熟知と味方バフを両立"},{n:"祭礼の断片",t:"f2p",note:"チャージ効率補強の定番星4"}],
+    artifact:{main:"熟知/チャージ効率型4セット",alt:"編成のダメージ源に応じて調整"},
+    mainStats:"時計:元素熟知 / 杯:元素熟知 / 冠:元素熟知 or 会心",
+    stats:[["元素熟知","1000目安"],["元素チャージ効率","140〜200%"]],
+    teams:[
+      {title:"編成①凍結サポート", members:["シトラリ","ヌヴィレット","フリーナ","楓原万葉"]},
+      {title:"編成②溶解サポート", members:["シトラリ","マーヴィカ","イアンサ","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=S1nnSlOYBdw", videoTitle:"溶解＆凍結編成を超強化！シトラリ最新育成ガイド", confirmed:true },
+
+  { name:"クロリンデ", element:"electro", weapon:"片手剣", role:"メインアタッカー(通常攻撃連打)", release:"Ver4.7 (2024/6)",
+    weapons:[{n:"赦罪",t:"signature",note:"会心ダメージと与ダメージバフが優秀"},{n:"黒剣",t:"f2p",note:"通常攻撃ダメージバフを持つ星4代替"}],
+    artifact:{main:"相性抜群の断章(4セット)",alt:"剣闘士のフィナーレ(代替)"},
+    mainStats:"時計:攻撃力％ / 杯:雷元素ダメージ / 冠:会心ダメージ",
+    stats:[["攻撃力","2500〜3000+"],["会心率","80%を超えないよう調整"],["会心ダメージ","160%+"]],
+    teams:[
+      {title:"編成①激化型", members:["クロリンデ","ナヒーダ","九条裟羅","綺良々"]},
+      {title:"編成②過負荷型", members:["クロリンデ","フィッシュル","シュヴルーズ","トーマ"]}
+    ],
+    video:"https://www.youtube.com/watch?v=y8WcJwYA_do", videoTitle:"強さも使い方も激変した「クロリンデ」最新解説", confirmed:true },
+
+  { name:"アルレッキーノ", element:"pyro", weapon:"長柄武器", role:"メインアタッカー(契約消費)", release:"Ver4.6 (2024/4)",
+    weapons:[{n:"赤月のシルエット",t:"signature",note:"契約に応じたダメージバフが乗る"},{n:"死闘の槍／和璞鳶",t:"f2p",note:"会心と攻撃力確保の代替候補"}],
+    artifact:{main:"諧律奇想の断章(4セット)",alt:"剣闘士のフィナーレ(代替)"},
+    mainStats:"時計:攻撃力％ or チャージ効率 / 杯:攻撃力 or 炎元素ダメージ / 冠:会心",
+    stats:[["攻撃力","3000目安"],["会心率:会心ダメージ","1:2(例 50%/100%)"]],
+    teams:[
+      {title:"編成①溶解型", members:["アルレッキーノ","シトラリ","楓原万葉","ベネット"]},
+      {title:"編成②バフ特化型", members:["アルレッキーノ","鍾離","行秋","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=UvveKBw7d6c", videoTitle:"シトラリで編成が激変！「召使」Ver5.3最新解説", confirmed:true },
+
+  { name:"ナヴィア", element:"geo", weapon:"両手剣", role:"メインアタッカー(重撃)", release:"Ver4.3 (2023/12)",
+    weapons:[{n:"裁断",t:"signature",note:"攻撃力とスキルダメージを両立"},{n:"アースシェイカー／タイダル・シャドー",t:"f2p",note:"無償入手できる代替候補"}],
+    artifact:{main:"残響の森で囁かれる夜話(4セット)",alt:"晶化シールド発動時に攻撃力・岩ダメージ強化"},
+    mainStats:"時計:攻撃力％ / 杯:岩元素ダメージ / 冠:会心",
+    stats:[["会心率","80%"],["会心ダメージ","200%"],["攻撃力","2200+"],["元素チャージ効率","120%"]],
+    teams:[
+      {title:"編成①結晶反応型", members:["ナヴィア","香菱","アルベド","ベネット"]},
+      {title:"編成②岩炎共鳴型", members:["ナヴィア","鍾離","ベネット","ゴロー"]}
+    ],
+    video:"https://www.youtube.com/watch?v=27Pq_ttoehI", videoTitle:"Ver5.6「ナヴィア」使い方・育成・編成を解説", confirmed:true },
+
+  { name:"フリーナ", element:"hydro", weapon:"片手剣", role:"サポート／サブアタッカー", release:"Ver4.2 (2023/11)",
+    weapons:[{n:"静水流転の輝き",t:"signature",note:"スキルダメージとHP上限を強化"},{n:"西風剣／腐植の剣",t:"f2p",note:"チャージ効率の補強に"}],
+    artifact:{main:"黄金の劇団(4セット)",alt:"千岩牢固(編成次第)"},
+    mainStats:"時計:HP％ / 杯:HP％ / 冠:会心",
+    stats:[["HP","30000〜40000+"],["元素チャージ効率","150%+"],["会心率:会心ダメージ","1:2目安"]],
+    teams:[
+      {title:"編成①水国家隊", members:["フリーナ","ヌヴィレット","夜蘭","シャロネン"]},
+      {title:"編成②溶解サポート", members:["フリーナ","胡桃","行秋","鍾離"]}
+    ],
+    video:"https://www.youtube.com/watch?v=rwwxgFZaUf0", videoTitle:"最強水サブアタッカー！「フリーナ」Ver5.4最新解説", confirmed:true },
+
+  { name:"ヌヴィレット", element:"hydro", weapon:"法器", role:"メインアタッカー", release:"Ver4.1 (2023/9)",
+    weapons:[{n:"久遠流転の大典",t:"signature",note:"HP・ダメージ・会心ダメージを同時強化"}],
+    artifact:{main:"ファントムハンター(4セット)",alt:"沈淪の心(厳選途中の代替)"},
+    mainStats:"時計:HP％ / 杯:水元素ダメージ / 冠:会心率",
+    stats:[["HP","35000+"],["会心率","50%"],["会心ダメージ","280%"]],
+    teams:[
+      {title:"編成①単水編成", members:["ヌヴィレット","フリーナ","夜蘭","早柚"]},
+      {title:"編成②凍結編成", members:["ヌヴィレット","フリーナ","シャロネン","楓原万葉"]}
+    ],
+    video:"https://www.youtube.com/watch?v=xVP7Jqjr_54", videoTitle:"完全無欠の最強アタッカー！「ヌヴィレット」Ver4.5最新解説", confirmed:true },
+
+  { name:"アルハイゼン", element:"dendro", weapon:"片手剣", role:"メインアタッカー(反応特化)", release:"Ver3.4 (2023/1)",
+    weapons:[{n:"会心ダメージ型片手剣",t:"f2p",note:"会心ダメージ確保の高会心武器が有力"}],
+    artifact:{main:"金メッキの夢(4セット)",alt:"熟知編成なら深林の記憶も検討"},
+    mainStats:"時計:元素熟知 / 杯:元素熟知 or 草元素ダメージ / 冠:会心",
+    stats:[["元素熟知","800〜1000"],["会心率","70%+"],["会心ダメージ","140%+"]],
+    teams:[
+      {title:"編成①拡散型", members:["アルハイゼン","ナヒーダ","八重神子","夜蘭"]},
+      {title:"編成②蒸発型", members:["アルハイゼン","ナヒーダ","タルタリヤ","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=WX7uUdzlMVM", videoTitle:"Ver4.7「アルハイゼン」おすすめ育成を完全解説", confirmed:true },
+
+  { name:"ナヒーダ", element:"dendro", weapon:"法器", role:"サブアタッカー(反応特化)", release:"Ver3.2 (2022/11)",
+    weapons:[{n:"千夜に浮かぶ夢",t:"signature",note:"熟知が非常に高くチームにも付与"},{n:"祭礼の断片",t:"f2p",note:"熟知確保の定番星4"}],
+    artifact:{main:"深林の記憶(4セット)",alt:"金メッキの夢(同時2元素以上の編成)"},
+    mainStats:"時計:元素熟知 / 杯:元素熟知 / 冠:元素熟知",
+    stats:[["元素熟知","800〜1000(理想1000)"]],
+    teams:[
+      {title:"編成①超開花型", members:["ナヒーダ","雷電将軍","行秋","ベネット"]},
+      {title:"編成②拡散型", members:["ナヒーダ","アルハイゼン","夜蘭","早柚"]}
+    ],
+    video:"https://www.youtube.com/watch?v=b_bx_DcarLo", videoTitle:"Ver5.1「ナヒーダ」使い方と育成を無凸で解説", confirmed:true },
+
+  { name:"夜蘭", element:"hydro", weapon:"弓", role:"サブアタッカー", release:"Ver2.7 (2022/5)",
+    weapons:[{n:"HP／チャージ効率系武器",t:"f2p",note:"HPを上げすぎない調整が重要"}],
+    artifact:{main:"絶縁の旗印 or 追憶のしめ縄",alt:"編成のダメージ源に応じて選択"},
+    mainStats:"時計:HP％ / 杯:水元素ダメージ or HP％ / 冠:会心",
+    stats:[["HP","上げすぎ注意（上限あり）"],["元素チャージ効率","150〜160%"]],
+    teams:[
+      {title:"編成①蒸発国家隊", members:["夜蘭","胡桃","香菱","モナ"]},
+      {title:"編成②超開花型", members:["夜蘭","ナヒーダ","雷電将軍","荒瀧一斗"]}
+    ],
+    video:"https://www.youtube.com/watch?v=V-HQ3a-pgKU", videoTitle:"優秀すぎるサブアタッカー！「夜蘭」Ver4.8最新解説", confirmed:true },
+
+  { name:"神里綾人", element:"hydro", weapon:"片手剣", role:"メインアタッカー", release:"Ver2.6 (2022/3)",
+    weapons:[{n:"波乱月白経津",t:"signature",note:"会心率と通常/元素ダメージを強化"},{n:"黒剣",t:"f2p",note:"通常攻撃火力の底上げ"}],
+    artifact:{main:"来歆の余響／剣闘士のフィナーレ",alt:"沈淪の心・水仙の夢(サブ次第)"},
+    mainStats:"時計:攻撃力％ / 杯:水元素ダメージ / 冠:会心",
+    stats:[["攻撃力","高いほど良い"],["会心率:会心ダメージ","1:2目安"]],
+    teams:[
+      {title:"編成①単水編成", members:["神里綾人","夜蘭","早柚","ベネット"]},
+      {title:"編成②万能編成", members:["神里綾人","行秋","鍾離","ベネット"]}
+    ],
+    video: CH_BASE+encodeURIComponent("神里綾人 おすすめ武器 聖遺物"), videoTitle:"「神里綾人」の関連動画を検索", confirmed:false },
+
+  { name:"八重神子", element:"electro", weapon:"法器", role:"サブアタッカー(設置型)", release:"Ver2.5 (2022/2)",
+    weapons:[{n:"神楽の真意",t:"signature",note:"唯一、狐火ダメージを直接強化"},{n:"祭礼の断片",t:"f2p",note:"熟知重視編成向けの代替"}],
+    artifact:{main:"影に沈む幻(4セット・狐火編成)",alt:"黄金の劇団(通常編成)"},
+    mainStats:"時計:攻撃力％ / 杯:雷元素ダメージ / 冠:会心",
+    stats:[["会心率","80%(90%も可)"],["会心ダメージ","160%(180%も可)"],["元素熟知","反応編成では優先度上昇"]],
+    teams:[
+      {title:"編成①超開花型", members:["八重神子","ナヒーダ","荒瀧一斗","ゴロー"]},
+      {title:"編成②電気バフ型", members:["八重神子","行秋","ベネット","香菱"]}
+    ],
+    video:"https://www.youtube.com/watch?v=Zr7cfhncO8Y", videoTitle:"結局いま八重神子はどう使うのが正解？最強ビルド解説", confirmed:true },
+
+  { name:"荒瀧一斗", element:"geo", weapon:"両手剣", role:"メインアタッカー(防御力参照)", release:"Ver2.3 (2021/12)",
+    weapons:[{n:"赤角石塵滅砕",t:"signature",note:"無凸でも安定して最大火力を発揮"}],
+    artifact:{main:"華館夢醒形骸記(4セット)",alt:"防御力・岩元素ダメージを底上げ"},
+    mainStats:"時計:防御力％ / 杯:岩元素ダメージ / 冠:会心",
+    stats:[["防御力・岩元素ダメージ","主軸で強化"],["会心","冠・サブで確保"]],
+    teams:[
+      {title:"編成①岩元素編成", members:["荒瀧一斗","ゴロー","アルベド","雲菫"]},
+      {title:"編成②結晶バフ編成", members:["荒瀧一斗","鍾離","ベネット","行秋"]}
+    ],
+    video: CH_BASE+encodeURIComponent("荒瀧一斗 おすすめ武器 聖遺物"), videoTitle:"「荒瀧一斗」の関連動画を検索", confirmed:false },
+
+  { name:"雷電将軍", element:"electro", weapon:"長柄武器", role:"メインアタッカー(爆発型)", release:"Ver2.1 (2021/9)",
+    weapons:[{n:"草薙の稲光",t:"signature",note:"チャージ効率→攻撃力変換。最適解"},{n:"漁獲",t:"f2p",note:"チャージ効率+会心率(スキル時)、無償入手可"}],
+    artifact:{main:"絶縁の旗印(4セット)",alt:"金メッキの夢／楽園の絶花(草結晶編成時)"},
+    mainStats:"時計:チャージ効率 / 杯:雷元素ダメージ / 冠:会心",
+    stats:[["元素チャージ効率","約250%"],["会心率","約60%"],["会心ダメージ","約120%"],["攻撃力","2000+"]],
+    teams:[
+      {title:"編成①雷電国家隊", members:["雷電将軍","夜蘭","行秋","ベネット"]},
+      {title:"編成②超開花型", members:["雷電将軍","ナヒーダ","久岐忍","鍾離"]}
+    ],
+    video:"https://www.youtube.com/watch?v=HTBXzE7Ukdo", videoTitle:"「雷電将軍」使い方と育成を無凸で解説", confirmed:true },
+
+  { name:"宵宮", element:"pyro", weapon:"弓", role:"メインアタッカー(通常攻撃連打)", release:"Ver2.0 (2021/8)",
+    weapons:[{n:"飛雷の鳴弦",t:"signature",note:"通常攻撃特化の最適解"},{n:"弓蔵",t:"f2p",note:"星5に迫る性能の星4"}],
+    artifact:{main:"追憶のしめ縄(4セット)",alt:"会心率/会心ダメージ武器かで調整"},
+    mainStats:"時計:攻撃力％ / 杯:炎元素ダメージ / 冠:会心",
+    stats:[["攻撃力","1800〜2000"],["会心率","80〜90%"],["会心ダメージ","160〜180%"]],
+    teams:[
+      {title:"編成①激化型", members:["宵宮","ナヒーダ","行秋","ベネット"]},
+      {title:"編成②通常バフ型", members:["宵宮","夜蘭","鍾離","ベネット"]}
+    ],
+    video: CH_BASE+encodeURIComponent("宵宮 おすすめ武器 聖遺物"), videoTitle:"「宵宮」の関連動画を検索", confirmed:false },
+
+  { name:"神里綾華", element:"cryo", weapon:"片手剣", role:"メインアタッカー(凍結型)", release:"Ver2.0 (2021/7)",
+    weapons:[{n:"霧切の廻光",t:"signature",note:"会心ダメージとダメージバフを両立"}],
+    artifact:{main:"氷風を彷徨う勇士(4セット)",alt:"氷風2＋剣闘士2の代替構成"},
+    mainStats:"時計:攻撃力％ / 杯:氷元素ダメージ / 冠:会心ダメージ",
+    stats:[["攻撃力","2000+"],["会心ダメージ","220%(サブ会心ダメ武器時180%)"]],
+    teams:[
+      {title:"編成①永冻(凍結)型", members:["神里綾華","夜蘭","シャロネン","ディオナ"]},
+      {title:"編成②通常バフ型", members:["神里綾華","楓原万葉","ベネット","行秋"]}
+    ],
+    video:"https://www.youtube.com/watch?v=Qgg4LBrjreg", videoTitle:"エスコフィエで超強化！「神里綾華」Ver5.6最新解説", confirmed:true },
+
+  { name:"楓原万葉", element:"anemo", weapon:"片手剣", role:"サポート(拡散)", release:"Ver1.6 (2021/6)",
+    weapons:[{n:"蒼古なる自由への誓い",t:"signature",note:"熟知とチーム全体バフを両立"}],
+    artifact:{main:"翠緑の影(4セット)",alt:"熟知を稼げれば代替も可"},
+    mainStats:"時計:元素熟知 / 杯:元素熟知 / 冠:元素熟知",
+    stats:[["元素熟知","800〜1000"],["元素チャージ効率","160%目安"]],
+    teams:[
+      {title:"編成①拡散雷編成", members:["楓原万葉","雷電将軍","夜蘭","行秋"]},
+      {title:"編成②凍結サポート", members:["楓原万葉","甘雨","モナ","ディオナ"]}
+    ],
+    video:"https://www.youtube.com/watch?v=CKG0Q2fV2Ng", videoTitle:"最高峰のサポーター！「万葉」Ver4.5最新解説", confirmed:true },
+
+  { name:"胡桃", element:"pyro", weapon:"長柄武器", role:"メインアタッカー(重撃型)", release:"Ver1.3 (2021/3)",
+    weapons:[{n:"護摩の杖",t:"signature",note:"HP→攻撃力・会心ダメージ。最適解"},{n:"黒纓槍",t:"f2p",note:"HP確保用の代替候補"}],
+    artifact:{main:"燃え盛る炎の魔女(4セット)",alt:"追憶のしめ縄"},
+    mainStats:"時計:HP％ / 杯:炎元素ダメージ / 冠:会心",
+    stats:[["HP","30000+"],["会心率","70%目安"],["会心ダメージ","140〜200%"],["元素熟知","溶解編成なら+"]],
+    teams:[
+      {title:"編成①蒸発国家隊", members:["胡桃","行秋","楓原万葉","シャロネン"]},
+      {title:"編成②通常バフ型", members:["胡桃","鍾離","行秋","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=K5IEtpzoJ-s", videoTitle:"Ver5.1「胡桃」使い方と育成を無凸で解説", confirmed:true },
+
+  { name:"魈", element:"anemo", weapon:"長柄武器", role:"メインアタッカー(高速回転)", release:"Ver1.3 (2021/2)",
+    weapons:[{n:"和璞鳶",t:"signature",note:"万能ステータス強化"},{n:"護摩の杖",t:"f2p",note:"会心ダメージ重視なら有力"}],
+    artifact:{main:"長き夜の誓い(4セット)",alt:"辰砂往生録(HP減少構成時)"},
+    mainStats:"時計:攻撃力％ / 杯:風元素ダメージ / 冠:会心",
+    stats:[["聖遺物スコア","170+が目安"],["会心率:会心ダメージ","1:2が基本"]],
+    teams:[
+      {title:"編成①プランジ砲台", members:["魈","夜蘭","ベネット","早柚"]},
+      {title:"編成②バフ特化型", members:["魈","鍾離","行秋","ベネット"]}
+    ],
+    video: CH_BASE+encodeURIComponent("魈 おすすめ武器 聖遺物"), videoTitle:"「魈」の関連動画を検索", confirmed:false },
+
+  { name:"甘雨", element:"cryo", weapon:"弓", role:"メインアタッカー(遠距離重撃)", release:"Ver1.2 (2021/1)",
+    weapons:[{n:"アモスの弓",t:"signature",note:"重撃ダメージ強化の定番"},{n:"始まりの大魔術／星鷲の紅き羽",t:"f2p",note:"入手性の良い代替候補"}],
+    artifact:{main:"氷風を彷徨う勇士(4セット)",alt:"2セット組み合わせも可"},
+    mainStats:"時計:攻撃力％ / 杯:氷元素ダメージ / 冠:会心",
+    stats:[["会心率","30〜40%(氷共鳴込み)"],["会心ダメージ","高めに調整"],["攻撃力","2000目安"]],
+    teams:[
+      {title:"編成①永冻(凍結)型", members:["甘雨","モナ","フィッシュル","ディオナ"]},
+      {title:"編成②溶解型", members:["甘雨","ベネット","香菱","鍾離"]}
+    ],
+    video: CH_BASE+encodeURIComponent("甘雨 おすすめ武器 聖遺物"), videoTitle:"「甘雨」の関連動画を検索", confirmed:false },
+
+  { name:"鍾離", element:"geo", weapon:"長柄武器", role:"シールダー／サポート", release:"Ver1.1 (2020/12)",
+    weapons:[{n:"護摩の杖",t:"signature",note:"HPを大きく伸ばせる"},{n:"黒纓槍／西風長槍",t:"f2p",note:"チャージ効率が必要な編成向け"}],
+    artifact:{main:"千岩牢固(4セット)",alt:"HP寄りの構成でも可"},
+    mainStats:"時計:HP％ / 杯:岩元素ダメージ or HP％ / 冠:HP％",
+    stats:[["HP","50000+が目安"],["シールド強度","千岩4セットで安定"]],
+    teams:[
+      {title:"編成①雷電国家隊シールド", members:["鍾離","雷電将軍","夜蘭","行秋"]},
+      {title:"編成②激化サポート", members:["鍾離","ナヒーダ","八重神子","行秋"]}
+    ],
+    video:"https://www.youtube.com/watch?v=cxsiZ9Jm1kw", videoTitle:"最強シールドキャラ！「鍾離」Ver5.2最新解説", confirmed:true },
+
+  { name:"クレー", element:"pyro", weapon:"法器", role:"メインアタッカー(爆発物設置)", release:"Ver1.0 (2020/10)",
+    weapons:[{n:"四風原典",t:"signature",note:"会心率と元素ダメージを両立"},{n:"ドドコの物語",t:"f2p",note:"チャージ攻撃バフ持ちの星4"}],
+    artifact:{main:"燃え盛る炎の魔女(4セット)",alt:"会心率が低い場合は会心率優先で調整"},
+    mainStats:"時計:攻撃力％ / 杯:炎元素ダメージ / 冠:会心",
+    stats:[["会心率","60%+を優先"],["攻撃力／炎元素ダメージ","次点で強化"]],
+    teams:[
+      {title:"編成①蒸発爆破型", members:["クレー","ベネット","モナ","夜蘭"]},
+      {title:"編成②バフ特化型", members:["クレー","鍾離","行秋","ベネット"]}
+    ],
+    video: CH_BASE+encodeURIComponent("クレー おすすめ武器 聖遺物"), videoTitle:"「クレー」の関連動画を検索", confirmed:false },
+
+  { name:"行秋", element:"hydro", weapon:"片手剣", role:"サブアタッカー／サポート", release:"Ver1.0 (2020/9)",
+    weapons:[{n:"欲望の断片",t:"signature",note:"スキル発動頻度を上げやすい"},{n:"祭礼の剣",t:"f2p",note:"チャージ効率の底上げに有効"}],
+    artifact:{main:"絶縁の旗印(4セット)",alt:"深林の記憶2＋剣闘士のフィナーレ2"},
+    mainStats:"時計:チャージ効率 / 杯:水元素ダメージ / 冠:会心",
+    stats:[["元素チャージ効率","優先度最高"],["水元素ダメージ／会心","次点で強化"]],
+    teams:[
+      {title:"編成①雷電国家隊", members:["行秋","雷電将軍","夜蘭","ベネット"]},
+      {title:"編成②蒸発サポート", members:["行秋","胡桃","楓原万葉","シャロネン"]}
+    ],
+    video:"https://www.youtube.com/watch?v=pR-6XvYMETs", videoTitle:"星5より強い星4キャラ！「行秋」Ver4.5最新解説", confirmed:true },
+
+  { name:"ベネット", element:"pyro", weapon:"片手剣", role:"バッファー／ヒーラー", release:"Ver1.0 (2020/9)",
+    weapons:[{n:"天空の刃",t:"signature",note:"攻撃力とチャージ効率のバランスが良い"},{n:"西風剣",t:"f2p",note:"星4でチャージ効率補強"}],
+    artifact:{main:"旧貴族のしつけ(4セット)",alt:"編成次第で千岩牢固も選択肢"},
+    mainStats:"時計:HP％ or チャージ効率 / 杯:HP％ / 冠:HP％",
+    stats:[["元素チャージ効率","200%目安"],["HP","回復・シールド量に直結"]],
+    teams:[
+      {title:"編成①雷電国家隊バフ", members:["ベネット","雷電将軍","夜蘭","行秋"]},
+      {title:"編成②香菱コンボ", members:["ベネット","香菱","行秋","鍾離"]}
+    ],
+    video:"https://www.youtube.com/watch?v=Y07j0rLICIA", videoTitle:"Ver4.7「ベネット」おすすめ育成を完全解説", confirmed:true },
+];
+
+function renderChips(){
+  const elWrap = document.getElementById("element-chips");
+  const allElChip = chipEl("全属性", "all", null);
+  allElChip.setAttribute("aria-pressed","true");
+  elWrap.appendChild(allElChip);
+  Object.entries(ELEMENTS).forEach(([key,v])=>{
+    elWrap.appendChild(chipEl(v.label, key, v.color));
+  });
+
+  const wpWrap = document.getElementById("weapon-chips");
+  wpWrap.appendChild(chipEl("全武器","allw",null));
+  WEAPONS.forEach(w=> wpWrap.appendChild(chipEl(w, w, null)));
+}
+function chipEl(label,val,color){
+  const b=document.createElement("button");
+  b.className="chip"; b.type="button"; b.dataset.val=val;
+  b.setAttribute("aria-pressed","false");
+  if(color){ b.innerHTML = `<span class="dot" style="background:${color}"></span>${label}`; }
+  else { b.textContent = label; }
+  return b;
+}
+
+let state = { el:"all", wp:"allw", q:"" };
+
+function matches(item){
+  if(state.el!=="all" && item.element!==state.el) return false;
+  if(state.wp!=="allw" && item.weapon!==state.wp) return false;
+  if(state.q && !item.name.includes(state.q)) return false;
+  return true;
+}
+
+function card(item){
+  const el = ELEMENTS[item.element];
+  const weaponsHtml = item.weapons.map(w=>
+    `<li><span class="tier ${w.t==='signature'?'sig':''}">${w.t==='signature'?'★5専用':'代替'}</span><span class="wname">${w.n}</span></li>
+     <li style="margin:-2px 0 2px 46px"><span class="wnote">${w.note}</span></li>`
+  ).join("");
+
+  const statsHtml = item.stats.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join("");
+
+  const teamsHtml = item.teams.map(t=>{
+    const pills = t.members.map(m=>
+      `<span class="member-pill ${m===item.name?'self':''}">${m}</span>`
+    ).join("");
+    return `<div class="team-row"><span class="team-tag">${t.title}</span>${pills}</div>`;
+  }).join("");
+
+  return `
+  <article class="card" style="--el:${el.color}">
+    <div class="card-head">
+      <div class="name-block">
+        <h2>${item.name}</h2>
+        <div class="meta-line"><span class="el-name">${el.label}元素</span>・${item.weapon}・${item.release}</div>
+        <span class="role-tag">${item.role}</span>
+      </div>
+      <div class="el-icon" style="color:${el.color}">${el.icon}</div>
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="section-label" style="color:${el.color}">おすすめ武器</div>
+        <ul class="weapon-list">${weaponsHtml}</ul>
+      </div>
+      <div class="artifact-block">
+        <div class="section-label" style="color:${el.color}">おすすめ聖遺物</div>
+        <div class="artifact-main">${item.artifact.main}</div>
+        <div class="artifact-alt">代替: ${item.artifact.alt}</div>
+      </div>
+      <div>
+        <div class="section-label" style="color:${el.color}">目標ステータス</div>
+        <div class="main-stats">${item.mainStats}</div>
+        <table class="stat-table">${statsHtml}</table>
+      </div>
+      <div>
+        <div class="section-label" style="color:${el.color}">深境螺旋 おすすめ編成(2パターン)</div>
+        <div class="team-block">${teamsHtml}</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <a class="video-link" href="${item.video}" target="_blank" rel="noopener">
+        ${item.confirmed
+          ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+          : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'}
+        <span>${item.videoTitle}</span>
+      </a>
+      <span class="confidence ${item.confirmed?'confirmed':'inferred'}">${item.confirmed?'個別ソース確認済み':'複数情報から集約'}</span>
+    </div>
+  </article>`;
+}
+
+function render(){
+  const grid = document.getElementById("grid");
+  const filtered = DATA.filter(matches);
+  grid.innerHTML = filtered.length ? filtered.map(card).join("") :
+    `<div class="empty-state">該当するキャラクターが見つかりませんでした。</div>`;
+  document.getElementById("count").textContent = `${filtered.length} / ${DATA.length} キャラクター`;
+}
+
+renderChips();
+render();
+
+document.getElementById("element-chips").addEventListener("click", e=>{
+  const b = e.target.closest(".chip"); if(!b) return;
+  state.el = b.dataset.val;
+  [...document.getElementById("element-chips").children].forEach(c=>c.setAttribute("aria-pressed", c===b));
+  render();
+});
+document.getElementById("weapon-chips").addEventListener("click", e=>{
+  const b = e.target.closest(".chip"); if(!b) return;
+  state.wp = b.dataset.val;
+  [...document.getElementById("weapon-chips").children].forEach(c=>c.setAttribute("aria-pressed", c===b));
+  render();
+});
+document.getElementById("search").addEventListener("input", e=>{
+  state.q = e.target.value.trim();
+  render();
+});
+</script>
+</body>
+</html>
