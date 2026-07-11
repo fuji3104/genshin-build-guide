@@ -254,6 +254,15 @@
     max-width:1180px; margin: 40px auto 0; padding: 24px 20px 0; border-top:1px solid var(--border);
     color: var(--muted); font-size:12.5px;
   }
+  .support-row{ margin-bottom: 16px; }
+  .support-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; font-weight:600; color: var(--accent);
+    text-decoration:none; padding: 6px 13px; border:1px solid var(--border); border-radius:999px;
+    background: var(--surface-2); transition: border-color .15s, background .15s;
+  }
+  .support-link:hover{ border-color: var(--accent); background: var(--accent-soft); }
+  .support-link svg{ flex:none; }
 
   a{ color: var(--accent); }
 </style>
@@ -289,6 +298,12 @@
 </main>
 
 <footer>
+  <div class="support-row">
+    <a class="support-link" href="https://ofuse.me/57a60673" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+      このサイトを応援する(Ofuse)
+    </a>
+  </div>
   <p>本サイトは、原神の攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている情報をもとに、編集部にて整理・要約したものです。数値やおすすめ装備は各情報が公開された時点のバージョンに基づくため、実際の最新環境とは異なる場合があります。正確な最新情報は必ず各情報源の一次情報をご確認ください。当サイトはゲーム公式運営および参照先の各サイト・チャンネルとは関係のない非公式のファンサイトです。</p>
 </footer>
 
