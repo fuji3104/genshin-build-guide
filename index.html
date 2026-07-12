@@ -239,6 +239,33 @@
     border-color: var(--el, var(--accent)); color: var(--el, var(--accent)); font-weight:700;
   }
 
+  /* ---------- Abyss meta ranking ---------- */
+  .meta-section{ max-width:1180px; margin:0 auto; padding:28px 20px 6px; }
+  .meta-head{ display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:6px 16px; margin-bottom:14px; }
+  .meta-head h2{ font-size:18.5px; margin:0; font-weight:700; }
+  .meta-updated{ font-size:12px; color:var(--muted); white-space:nowrap; }
+  .meta-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:12px; }
+  .meta-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:12px 14px; display:flex; flex-direction:column; gap:7px; box-shadow:var(--shadow);
+  }
+  .meta-rank-row{ display:flex; align-items:center; gap:8px; }
+  .meta-rank{
+    flex:none; width:22px; height:22px; border-radius:7px;
+    background:var(--accent-soft); color:var(--accent-strong);
+    font-size:11.5px; font-weight:800; display:flex; align-items:center; justify-content:center;
+  }
+  .meta-title{ font-weight:700; font-size:13.5px; flex:1; }
+  .meta-tag{
+    flex:none; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:6px;
+    background:var(--surface-2); color:var(--muted);
+  }
+  .meta-members{ display:flex; flex-wrap:wrap; gap:6px; }
+  .meta-note{ font-size:12px; color:var(--muted); }
+  .meta-source{ font-size:11.5px; color:var(--muted); margin-top:6px; }
+  .meta-source a{ color:var(--accent); text-decoration:none; }
+  .meta-source a:hover{ text-decoration:underline; }
+
   .card-foot{
     margin-top:auto; padding: 12px 18px; border-top:1px solid var(--border);
     display:flex; align-items:center; justify-content:space-between; gap:10px;
@@ -288,6 +315,15 @@
   </div>
 </header>
 
+<section class="meta-section">
+  <div class="meta-head">
+    <h2>現在の深境螺旋(スパイラルアビス) 人気編成ランキング</h2>
+    <span class="meta-updated" id="meta-updated"></span>
+  </div>
+  <div class="meta-grid" id="meta-grid"></div>
+  <div class="meta-source" id="meta-source"></div>
+</section>
+
 <div class="toolbar">
   <div class="toolbar-inner">
     <div class="search-box">
@@ -326,6 +362,33 @@ const ELEMENTS = {
   geo:    { label: "岩", color: "var(--geo)",    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 19 21 5 21 2 8.5"/></svg>' },
 };
 const WEAPONS = ["両手剣","片手剣","長柄武器","弓","法器"];
+
+// 螺旋人気編成ランキング(手動集計スナップショット。大型パッチごとに見直し・更新すること)
+const ABYSS_META = {
+  updated: "Ver6.6集計時点(2026年6月)",
+  sourceLabel: "buffget.com「Genshin 6.6 Spiral Abyss: Top Teams, Usage Rates & 36-Star Guide」(★36達成プレイヤー5,611名の編成データ集計)",
+  sourceUrl: "https://buffget.com/news/genshin-66-spiral-abyss-top-teams-usage-rates-and-36-star-guide",
+  teams: [
+    { rank:1, title:"ヌヴィレット蒸発型", tag:"第2幕向け",
+      members:["ヌヴィレット","フリーナ","楓原万葉","鍾離"],
+      note:"楓原万葉95.7%・鍾離91.0%と非常に高い採用率。第2幕のほぼ確定編成。" },
+    { rank:2, title:"マーヴィカ 炎超載型", tag:"第1幕向け",
+      members:["マーヴィカ","香菱","ベネット","楓原万葉"],
+      note:"ベネット採用率92.0%。第1幕の炎元素ダメージバフを活かす構成。" },
+    { rank:3, title:"アルレッキーノ 持続炎ダメージ型", tag:"通し",
+      members:["アルレッキーノ","楓原万葉","ベネット","鍾離"],
+      note:"元素爆発の継続ダメージを軸にした安定編成。" },
+    { rank:4, title:"雷電将軍 国家隊", tag:"通し・低コスト",
+      members:["雷電将軍","香菱","ベネット","行秋"],
+      note:"編成難易度が低く汎用性が高い定番構成。" },
+    { rank:5, title:"超開花(ハイパーブルーム)", tag:"通し",
+      members:["ナヒーダ","行秋","雷電将軍","自由枠"],
+      note:"自由枠にはお手持ちの雷元素/水元素サブアタッカーを採用。" },
+    { rank:6, title:"激化(アグラベート)", tag:"通し",
+      members:["クロリンデ","ナヒーダ","楓原万葉","鍾離"],
+      note:"" },
+  ]
+};
 
 const CH_BASE = "https://www.youtube.com/results?search_query=";
 
@@ -758,8 +821,28 @@ function render(){
   document.getElementById("count").textContent = `${filtered.length} / ${DATA.length} キャラクター`;
 }
 
+function renderAbyssMeta(){
+  document.getElementById("meta-updated").textContent = ABYSS_META.updated;
+  document.getElementById("meta-grid").innerHTML = ABYSS_META.teams.map(t=>{
+    const pills = t.members.map(m=>`<span class="member-pill">${m}</span>`).join("");
+    return `
+    <div class="meta-card">
+      <div class="meta-rank-row">
+        <span class="meta-rank">${t.rank}</span>
+        <span class="meta-title">${t.title}</span>
+        <span class="meta-tag">${t.tag}</span>
+      </div>
+      <div class="meta-members">${pills}</div>
+      ${t.note ? `<div class="meta-note">${t.note}</div>` : ""}
+    </div>`;
+  }).join("");
+  document.getElementById("meta-source").innerHTML =
+    `情報源: <a href="${ABYSS_META.sourceUrl}" target="_blank" rel="noopener">${ABYSS_META.sourceLabel}</a>。ランキングはバージョン更新のたびに見直します。`;
+}
+
 renderChips();
 render();
+renderAbyssMeta();
 
 document.getElementById("element-chips").addEventListener("click", e=>{
   const b = e.target.closest(".chip"); if(!b) return;
