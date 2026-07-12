@@ -200,6 +200,20 @@
     outline-color: var(--el, var(--accent));
     outline-offset: 4px;
   }
+  .card.owned{ border-left-width: 5px; }
+  .owned-row{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    padding: 8px 18px; border-bottom: 1px dashed var(--border);
+    background: var(--surface-2); font-size: 12.5px;
+  }
+  .owned-toggle{ display:flex; align-items:center; gap:6px; cursor:pointer; color: var(--muted); user-select:none; }
+  .owned-toggle input{ accent-color: var(--el, var(--accent)); width:15px; height:15px; cursor:pointer; }
+  .card.owned .owned-toggle{ color: var(--el, var(--accent)); font-weight:700; }
+  .owned-const{
+    font-family:inherit; font-size:12px; color: var(--text); background: var(--surface);
+    border:1px solid var(--border); border-radius:6px; padding:2px 6px; cursor:pointer;
+  }
+  .owned-const:disabled{ opacity:0.5; cursor:not-allowed; }
   .card-head{
     padding: 16px 18px 12px;
     display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
@@ -409,6 +423,9 @@
       </div>
       <div class="chip-row" id="element-chips"></div>
       <div class="chip-row" id="weapon-chips"></div>
+      <div class="chip-row">
+        <button class="chip" type="button" id="owned-filter-chip" aria-pressed="false">所持キャラのみ</button>
+      </div>
       <div class="result-count" id="count"></div>
     </div>
   </div>
@@ -427,6 +444,7 @@
   </div>
   <p>本サイトは、原神の攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている情報をもとに、編集部にて整理・要約したものです。数値やおすすめ装備は各情報が公開された時点のバージョンに基づくため、実際の最新環境とは異なる場合があります。正確な最新情報は必ず各情報源の一次情報をご確認ください。当サイトはゲーム公式運営および参照先の各サイト・チャンネルとは関係のない非公式のファンサイトです。</p>
   <p>本サイトはアクセス解析のためGoogle Analyticsを使用しており、Cookieを通じて閲覧状況(訪問回数・閲覧ページ・滞在時間・大まかな地域等)を収集しています。個人を特定する情報は収集していません。</p>
+  <p>各キャラクターの「所持」「凸数」の登録内容は、お使いのブラウザ内(localStorage)にのみ保存され、外部やサーバーには送信されません。ブラウザやデバイスを変えると引き継がれない点にご注意ください。</p>
 </footer>
 
 <button id="back-to-top" class="back-to-top" type="button" aria-label="ページ上部へ戻る">
@@ -865,12 +883,20 @@ function chipEl(label,val,color){
   return b;
 }
 
-let state = { el:"all", wp:"allw", q:"" };
+let state = { el:"all", wp:"allw", q:"", ownedOnly:false };
+
+const OWNED_KEY = "genshinCompassOwned";
+function loadOwned(){
+  try{ return JSON.parse(localStorage.getItem(OWNED_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveOwned(){ localStorage.setItem(OWNED_KEY, JSON.stringify(ownedState)); }
+let ownedState = loadOwned();
 
 function matches(item){
   if(state.el!=="all" && item.element!==state.el) return false;
   if(state.wp!=="allw" && item.weapon!==state.wp) return false;
   if(state.q && !item.name.includes(state.q)) return false;
+  if(state.ownedOnly && !(ownedState[item.name] && ownedState[item.name].owned)) return false;
   return true;
 }
 
@@ -892,8 +918,13 @@ function card(item){
     return `<div class="team-row"><span class="team-tag">${t.title}</span>${pills}</div>`;
   }).join("");
 
+  const ownedInfo = ownedState[item.name] || { owned:false, c:0 };
+  const constOptions = [0,1,2,3,4,5,6].map(n=>
+    `<option value="${n}"${ownedInfo.c===n?' selected':''}>C${n}</option>`
+  ).join("");
+
   return `
-  <article class="card" id="${charId(item.name)}" style="--el:${el.color}">
+  <article class="card ${ownedInfo.owned?'owned':''}" id="${charId(item.name)}" style="--el:${el.color}">
     <div class="card-head">
       <div class="name-block">
         <h2>${item.name}</h2>
@@ -901,6 +932,13 @@ function card(item){
         <span class="role-tag">${item.role}</span>
       </div>
       <div class="el-icon" style="color:${el.color}">${el.icon}</div>
+    </div>
+    <div class="owned-row" data-name="${item.name}">
+      <label class="owned-toggle">
+        <input type="checkbox" class="owned-check" ${ownedInfo.owned?'checked':''}>
+        所持
+      </label>
+      <select class="owned-const" ${ownedInfo.owned?'':'disabled'}>${constOptions}</select>
     </div>
     <div class="card-body">
       <div>
@@ -995,6 +1033,34 @@ document.getElementById("weapon-chips").addEventListener("click", e=>{
 document.getElementById("search").addEventListener("input", e=>{
   state.q = e.target.value.trim();
   render();
+});
+document.getElementById("owned-filter-chip").addEventListener("click", e=>{
+  state.ownedOnly = !state.ownedOnly;
+  e.target.setAttribute("aria-pressed", String(state.ownedOnly));
+  render();
+});
+
+document.addEventListener("change", e=>{
+  const check = e.target.closest(".owned-check");
+  if(check){
+    const row = check.closest(".owned-row");
+    const name = row.dataset.name;
+    ownedState[name] = ownedState[name] || { owned:false, c:0 };
+    ownedState[name].owned = check.checked;
+    saveOwned();
+    row.querySelector(".owned-const").disabled = !check.checked;
+    check.closest(".card").classList.toggle("owned", check.checked);
+    if(state.ownedOnly && !check.checked) render();
+    return;
+  }
+  const sel = e.target.closest(".owned-const");
+  if(sel){
+    const row = sel.closest(".owned-row");
+    const name = row.dataset.name;
+    ownedState[name] = ownedState[name] || { owned:false, c:0 };
+    ownedState[name].c = Number(sel.value);
+    saveOwned();
+  }
 });
 
 function switchTab(tab){
