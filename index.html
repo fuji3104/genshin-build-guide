@@ -171,6 +171,14 @@
     overflow:hidden;
     display:flex; flex-direction:column;
     border-left: 3px solid var(--el, var(--accent));
+    scroll-margin-top: 90px;
+    transition: outline-color .3s, outline-offset .3s;
+    outline: 2px solid transparent;
+    outline-offset: 0;
+  }
+  .card.jump-highlight{
+    outline-color: var(--el, var(--accent));
+    outline-offset: 4px;
   }
   .card-head{
     padding: 16px 18px 12px;
@@ -237,6 +245,10 @@
   .member-pill.self{
     background: color-mix(in srgb, var(--el, var(--accent)) 18%, transparent);
     border-color: var(--el, var(--accent)); color: var(--el, var(--accent)); font-weight:700;
+  }
+  .member-pill.jumpable{ cursor:pointer; transition: background .15s, border-color .15s, color .15s; }
+  .member-pill.jumpable:hover{
+    background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong);
   }
 
   /* ---------- Abyss meta ranking ---------- */
@@ -776,14 +788,16 @@ function card(item){
   const statsHtml = item.stats.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join("");
 
   const teamsHtml = item.teams.map(t=>{
-    const pills = t.members.map(m=>
-      `<span class="member-pill ${m===item.name?'self':''}">${m}</span>`
-    ).join("");
+    const pills = t.members.map(m=>{
+      const isSelf = m===item.name;
+      const known = !isSelf && DATA.some(d=>d.name===m);
+      return `<span class="member-pill ${isSelf?'self':''} ${known?'jumpable':''}"${known?` data-jump="${m}"`:""}>${m}</span>`;
+    }).join("");
     return `<div class="team-row"><span class="team-tag">${t.title}</span>${pills}</div>`;
   }).join("");
 
   return `
-  <article class="card" style="--el:${el.color}">
+  <article class="card" id="${charId(item.name)}" style="--el:${el.color}">
     <div class="card-head">
       <div class="name-block">
         <h2>${item.name}</h2>
@@ -835,7 +849,10 @@ function render(){
 function renderAbyssMeta(){
   document.getElementById("meta-updated").textContent = ABYSS_META.updated;
   document.getElementById("meta-grid").innerHTML = ABYSS_META.teams.map(t=>{
-    const pills = t.members.map(m=>`<span class="member-pill">${m}</span>`).join("");
+    const pills = t.members.map(m=>{
+      const known = DATA.some(d=>d.name===m);
+      return `<span class="member-pill ${known?'jumpable':''}"${known?` data-jump="${m}"`:""}>${m}</span>`;
+    }).join("");
     return `
     <div class="meta-card">
       <div class="meta-rank-row">
@@ -870,6 +887,30 @@ document.getElementById("weapon-chips").addEventListener("click", e=>{
 document.getElementById("search").addEventListener("input", e=>{
   state.q = e.target.value.trim();
   render();
+});
+
+function charId(name){ return "char-" + name; }
+
+function jumpToCharacter(name){
+  let target = document.getElementById(charId(name));
+  if(!target){
+    state = { el:"all", wp:"allw", q:"" };
+    document.getElementById("search").value = "";
+    [...document.getElementById("element-chips").children].forEach(c=>c.setAttribute("aria-pressed", String(c.dataset.val==="all")));
+    [...document.getElementById("weapon-chips").children].forEach(c=>c.setAttribute("aria-pressed", String(c.dataset.val==="allw")));
+    render();
+    target = document.getElementById(charId(name));
+  }
+  if(!target) return;
+  target.scrollIntoView({behavior:"smooth", block:"start"});
+  target.classList.add("jump-highlight");
+  setTimeout(()=> target.classList.remove("jump-highlight"), 1600);
+}
+
+document.addEventListener("click", e=>{
+  const pill = e.target.closest(".member-pill.jumpable");
+  if(!pill) return;
+  jumpToCharacter(pill.dataset.jump);
 });
 </script>
 </body>
