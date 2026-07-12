@@ -273,9 +273,13 @@
 
   /* ---------- Abyss meta ranking ---------- */
   .meta-section{ max-width:1180px; margin:0 auto; padding:28px 20px 6px; }
-  .meta-head{ display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:6px 16px; margin-bottom:14px; }
+  .meta-head{ display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:6px 16px; margin-bottom:6px; }
   .meta-head h2{ font-size:18.5px; margin:0; font-weight:700; }
-  .meta-updated{ font-size:12px; color:var(--muted); white-space:nowrap; }
+  .meta-period-select{
+    font-family:inherit; font-size:12.5px; color:var(--text); background:var(--surface);
+    border:1px solid var(--border); border-radius:8px; padding:5px 10px; cursor:pointer;
+  }
+  .meta-updated{ font-size:12px; color:var(--muted); margin-bottom:14px; }
   .meta-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:12px; }
   .meta-card{
     background:var(--surface); border:1px solid var(--border); border-radius:12px;
@@ -387,9 +391,10 @@
 <div id="tab-panel-abyss" hidden>
   <section class="meta-section">
     <div class="meta-head">
-      <h2>現在の深境螺旋(スパイラルアビス) 人気編成ランキング</h2>
-      <span class="meta-updated" id="meta-updated"></span>
+      <h2>深境螺旋(スパイラルアビス) 人気編成ランキング</h2>
+      <select class="meta-period-select" id="meta-period-select"></select>
     </div>
+    <div class="meta-updated" id="meta-updated"></div>
     <div class="meta-grid" id="meta-grid"></div>
     <div class="meta-source" id="meta-source"></div>
   </section>
@@ -440,32 +445,58 @@ const ELEMENTS = {
 };
 const WEAPONS = ["両手剣","片手剣","長柄武器","弓","法器"];
 
-// 螺旋人気編成ランキング(手動集計スナップショット。大型パッチごとに見直し・更新すること)
-const ABYSS_META = {
-  updated: "Ver6.6集計時点(2026年6月)",
-  sourceLabel: "buffget.com「Genshin 6.6 Spiral Abyss: Top Teams, Usage Rates & 36-Star Guide」(★36達成プレイヤー5,611名の編成データ集計)",
-  sourceUrl: "https://buffget.com/news/genshin-66-spiral-abyss-top-teams-usage-rates-and-36-star-guide",
-  teams: [
-    { rank:1, title:"ヌヴィレット蒸発型", tag:"第2幕向け",
-      members:["ヌヴィレット","フリーナ","楓原万葉","鍾離"],
-      note:"楓原万葉95.7%・鍾離91.0%と非常に高い採用率。第2幕のほぼ確定編成。" },
-    { rank:2, title:"マーヴィカ 炎超載型", tag:"第1幕向け",
-      members:["マーヴィカ","香菱","ベネット","楓原万葉"],
-      note:"ベネット採用率92.0%。第1幕の炎元素ダメージバフを活かす構成。" },
-    { rank:3, title:"アルレッキーノ 持続炎ダメージ型", tag:"通し",
-      members:["アルレッキーノ","楓原万葉","ベネット","鍾離"],
-      note:"元素爆発の継続ダメージを軸にした安定編成。" },
-    { rank:4, title:"雷電将軍 国家隊", tag:"通し・低コスト",
-      members:["雷電将軍","香菱","ベネット","行秋"],
-      note:"編成難易度が低く汎用性が高い定番構成。" },
-    { rank:5, title:"超開花(ハイパーブルーム)", tag:"通し",
-      members:["ナヒーダ","行秋","雷電将軍","自由枠"],
-      note:"自由枠にはお手持ちの雷元素/水元素サブアタッカーを採用。" },
-    { rank:6, title:"激化(アグラベート)", tag:"通し",
-      members:["クロリンデ","ナヒーダ","楓原万葉","鍾離"],
-      note:"" },
-  ]
-};
+// 螺旋人気編成ランキング(手動集計スナップショット。新しい順。大型パッチごとに先頭へ追加すること)
+const ABYSS_META_HISTORY = [
+  {
+    version: "Ver6.6",
+    dateRange: "2026年5月20日〜6月30日",
+    sourceLabel: "buffget.com「Genshin 6.6 Spiral Abyss: Top Teams, Usage Rates & 36-Star Guide」(★36達成プレイヤー5,611名の編成データ集計)",
+    sourceUrl: "https://buffget.com/news/genshin-66-spiral-abyss-top-teams-usage-rates-and-36-star-guide",
+    teams: [
+      { rank:1, title:"ヌヴィレット蒸発型", tag:"第2幕向け",
+        members:["ヌヴィレット","フリーナ","楓原万葉","鍾離"],
+        note:"楓原万葉95.7%・鍾離91.0%と非常に高い採用率。第2幕のほぼ確定編成。" },
+      { rank:2, title:"マーヴィカ 炎超載型", tag:"第1幕向け",
+        members:["マーヴィカ","香菱","ベネット","楓原万葉"],
+        note:"ベネット採用率92.0%。第1幕の炎元素ダメージバフを活かす構成。" },
+      { rank:3, title:"アルレッキーノ 持続炎ダメージ型", tag:"通し",
+        members:["アルレッキーノ","楓原万葉","ベネット","鍾離"],
+        note:"元素爆発の継続ダメージを軸にした安定編成。" },
+      { rank:4, title:"雷電将軍 国家隊", tag:"通し・低コスト",
+        members:["雷電将軍","香菱","ベネット","行秋"],
+        note:"編成難易度が低く汎用性が高い定番構成。" },
+      { rank:5, title:"超開花(ハイパーブルーム)", tag:"通し",
+        members:["ナヒーダ","行秋","雷電将軍","自由枠"],
+        note:"自由枠にはお手持ちの雷元素/水元素サブアタッカーを採用。" },
+      { rank:6, title:"激化(アグラベート)", tag:"通し",
+        members:["クロリンデ","ナヒーダ","楓原万葉","鍾離"],
+        note:"" },
+    ]
+  },
+  {
+    version: "Ver6.5",
+    dateRange: "2026年4月8日〜5月19日",
+    sourceLabel: "gamebird「Ver6.5後半深境螺旋12層のキャラ使用率とパーティ編成」(中国圏の使用率データを基に集計)",
+    sourceUrl: "https://tori-game.com/rasen/",
+    teams: [
+      { rank:1, title:"月開花本命型", tag:"",
+        members:["ネフェル","コロンビーナ","ラウマ","ナヒーダ"],
+        note:"使用率43.8%で前半戦の圧倒的1位。" },
+      { rank:2, title:"バフ特化型", tag:"",
+        members:["ファルカ","ドゥリン","ウェンティ","ベネット"],
+        note:"使用率41.5%。" },
+      { rank:3, title:"月感電型", tag:"",
+        members:["フリンズ","コロンビーナ","イネファ","ナヒーダ"],
+        note:"使用率27.2%。" },
+      { rank:4, title:"炎超載型", tag:"",
+        members:["マーヴィカ","シロネン","シトラリ","ベネット"],
+        note:"使用率20.5%。" },
+      { rank:5, title:"月開花代替型", tag:"",
+        members:["ネフェル","コロンビーナ","ラウマ","白朮"],
+        note:"使用率19.3%。" },
+    ]
+  },
+];
 
 const CH_BASE = "https://www.youtube.com/results?search_query=";
 
@@ -911,9 +942,20 @@ function render(){
   document.getElementById("count").textContent = `${filtered.length} / ${DATA.length} キャラクター`;
 }
 
-function renderAbyssMeta(){
-  document.getElementById("meta-updated").textContent = ABYSS_META.updated;
-  document.getElementById("meta-grid").innerHTML = ABYSS_META.teams.map(t=>{
+function renderPeriodSelect(){
+  const sel = document.getElementById("meta-period-select");
+  sel.innerHTML = ABYSS_META_HISTORY.map((p,i)=>
+    `<option value="${i}">${p.version}(${p.dateRange})</option>`
+  ).join("");
+  sel.addEventListener("change", ()=> renderAbyssMeta(Number(sel.value)));
+}
+
+function renderAbyssMeta(index){
+  const period = ABYSS_META_HISTORY[index ?? 0];
+  document.getElementById("meta-period-select").value = String(index ?? 0);
+  document.getElementById("meta-updated").textContent =
+    `対象期間: ${period.dateRange}(${period.version})${index===0?" — 現行":""}`;
+  document.getElementById("meta-grid").innerHTML = period.teams.map(t=>{
     const pills = t.members.map(m=>{
       const known = DATA.some(d=>d.name===m);
       return `<span class="member-pill ${known?'jumpable':''}"${known?` data-jump="${m}"`:""}>${m}</span>`;
@@ -923,19 +965,20 @@ function renderAbyssMeta(){
       <div class="meta-rank-row">
         <span class="meta-rank">${t.rank}</span>
         <span class="meta-title">${t.title}</span>
-        <span class="meta-tag">${t.tag}</span>
+        ${t.tag ? `<span class="meta-tag">${t.tag}</span>` : ""}
       </div>
       <div class="meta-members">${pills}</div>
       ${t.note ? `<div class="meta-note">${t.note}</div>` : ""}
     </div>`;
   }).join("");
   document.getElementById("meta-source").innerHTML =
-    `情報源: <a href="${ABYSS_META.sourceUrl}" target="_blank" rel="noopener">${ABYSS_META.sourceLabel}</a>。ランキングはバージョン更新のたびに見直します。`;
+    `情報源: <a href="${period.sourceUrl}" target="_blank" rel="noopener">${period.sourceLabel}</a>。ランキングはバージョン更新のたびに新しい期間を追加します。`;
 }
 
 renderChips();
 render();
-renderAbyssMeta();
+renderPeriodSelect();
+renderAbyssMeta(0);
 
 document.getElementById("element-chips").addEventListener("click", e=>{
   const b = e.target.closest(".chip"); if(!b) return;
