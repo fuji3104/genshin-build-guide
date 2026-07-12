@@ -214,6 +214,15 @@
     border:1px solid var(--border); border-radius:6px; padding:2px 6px; cursor:pointer;
   }
   .owned-const:disabled{ opacity:0.5; cursor:not-allowed; }
+  .details-toggle{
+    display:flex; align-items:center; justify-content:center; gap:6px; width:100%;
+    padding:9px; border:none; border-top:1px dashed var(--border); background:none;
+    color:var(--muted); font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit;
+    transition: background .15s, color .15s;
+  }
+  .details-toggle:hover{ color:var(--text); background:var(--surface-2); }
+  .details-toggle .chevron{ transition: transform .2s; flex:none; }
+  .details-toggle[aria-expanded="true"] .chevron{ transform: rotate(180deg); }
   .card-head{
     padding: 16px 18px 12px;
     display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
@@ -984,6 +993,11 @@ function card(item){
       </label>
       <select class="owned-const" ${ownedInfo.owned?'':'disabled'}>${constOptions}</select>
     </div>
+    <button class="details-toggle" type="button" aria-expanded="false">
+      <span>詳細を見る(武器・聖遺物・編成)</span>
+      <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="card-details" hidden>
     <div class="card-body">
       <div>
         <div class="section-label" style="color:${el.color}">おすすめ武器</div>
@@ -1012,6 +1026,7 @@ function card(item){
         <span>${item.videoTitle}</span>
       </a>
       <span class="confidence ${item.confirmed?'confirmed':'inferred'}">${item.confirmed?'個別ソース確認済み':'複数情報から集約'}</span>
+    </div>
     </div>
   </article>`;
 }
@@ -1122,23 +1137,42 @@ function jumpToCharacter(name){
   switchTab("characters");
   let target = document.getElementById(charId(name));
   if(!target){
-    state = { el:"all", wp:"allw", q:"" };
+    state = { el:"all", wp:"allw", q:"", ownedOnly:false };
     document.getElementById("search").value = "";
+    document.getElementById("owned-filter-chip").setAttribute("aria-pressed","false");
     [...document.getElementById("element-chips").children].forEach(c=>c.setAttribute("aria-pressed", String(c.dataset.val==="all")));
     [...document.getElementById("weapon-chips").children].forEach(c=>c.setAttribute("aria-pressed", String(c.dataset.val==="allw")));
     render();
     target = document.getElementById(charId(name));
   }
   if(!target) return;
+  expandDetails(target);
   target.scrollIntoView({behavior:"smooth", block:"start"});
   target.classList.add("jump-highlight");
   setTimeout(()=> target.classList.remove("jump-highlight"), 1600);
 }
 
+function expandDetails(card){
+  const details = card.querySelector(".card-details");
+  const toggle = card.querySelector(".details-toggle");
+  if(!details || !details.hidden) return;
+  details.hidden = false;
+  toggle.setAttribute("aria-expanded","true");
+  toggle.querySelector("span").textContent = "閉じる";
+}
+
 document.addEventListener("click", e=>{
   const pill = e.target.closest(".member-pill.jumpable");
-  if(!pill) return;
-  jumpToCharacter(pill.dataset.jump);
+  if(pill){ jumpToCharacter(pill.dataset.jump); return; }
+
+  const toggle = e.target.closest(".details-toggle");
+  if(toggle){
+    const details = toggle.nextElementSibling;
+    const willShow = details.hidden;
+    details.hidden = !willShow;
+    toggle.setAttribute("aria-expanded", String(willShow));
+    toggle.querySelector("span").textContent = willShow ? "閉じる" : "詳細を見る(武器・聖遺物・編成)";
+  }
 });
 
 const backToTopBtn = document.getElementById("back-to-top");
