@@ -77,13 +77,20 @@
 
   /* ---------- Header ---------- */
   header.hero{
+    position: relative;
+    overflow: hidden;
     padding: 56px 20px 40px;
     border-bottom: 1px solid var(--border);
     background:
       radial-gradient(ellipse 900px 400px at 15% -10%, var(--accent-soft), transparent 60%),
       var(--bg);
   }
-  .hero-inner{ max-width: 1180px; margin:0 auto; }
+  .hero-compass{
+    position:absolute; right:-50px; top:-60px; width:340px; height:340px;
+    opacity:0.18; pointer-events:none; color: var(--accent);
+  }
+  @media (max-width:760px){ .hero-compass{ display:none; } }
+  .hero-inner{ max-width: 1180px; margin:0 auto; position:relative; z-index:1; }
   .eyebrow{
     display:inline-flex; align-items:center; gap:8px;
     font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -323,12 +330,44 @@
   .support-link:hover{ border-color: var(--accent); background: var(--accent-soft); }
   .support-link svg{ flex:none; }
 
+  /* ---------- Back to top ---------- */
+  .back-to-top{
+    position: fixed; right: 20px; bottom: 20px; z-index: 30;
+    width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer;
+    background: var(--accent); color: #1a1305; box-shadow: var(--shadow);
+    display:flex; align-items:center; justify-content:center;
+    opacity: 0; transform: translateY(10px); pointer-events: none;
+    transition: opacity .2s, transform .2s, background .15s;
+  }
+  .back-to-top.visible{ opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .back-to-top:hover{ background: var(--accent-strong); }
+
   a{ color: var(--accent); }
 </style>
 </head>
 <body>
 
 <header class="hero">
+  <svg class="hero-compass" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="100" cy="100" r="68" fill="none" stroke="currentColor" stroke-width="1"/>
+    <g stroke="currentColor" stroke-width="2">
+      <line x1="100" y1="8" x2="100" y2="24"/>
+      <line x1="100" y1="176" x2="100" y2="192"/>
+      <line x1="8" y1="100" x2="24" y2="100"/>
+      <line x1="176" y1="100" x2="192" y2="100"/>
+    </g>
+    <polygon points="100,34 113,100 100,100" fill="currentColor"/>
+    <polygon points="100,166 87,100 100,100" fill="currentColor" opacity="0.4"/>
+    <circle cx="100" cy="100" r="6" fill="currentColor"/>
+    <circle cx="100" cy="10" r="5" fill="var(--pyro)"/>
+    <circle cx="170.4" cy="43.9" r="5" fill="var(--hydro)"/>
+    <circle cx="187.8" cy="120" r="5" fill="var(--electro)"/>
+    <circle cx="139.1" cy="181.1" r="5" fill="var(--cryo)"/>
+    <circle cx="61" cy="181.1" r="5" fill="var(--dendro)"/>
+    <circle cx="12.3" cy="120" r="5" fill="var(--anemo)"/>
+    <circle cx="29.6" cy="43.9" r="5" fill="var(--geo)"/>
+  </svg>
   <div class="hero-inner">
     <div class="eyebrow">Genshin Impact / 育成データベース</div>
     <h1>原神 育成コンパス</h1>
@@ -384,6 +423,10 @@
   <p>本サイトは、原神の攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている情報をもとに、編集部にて整理・要約したものです。数値やおすすめ装備は各情報が公開された時点のバージョンに基づくため、実際の最新環境とは異なる場合があります。正確な最新情報は必ず各情報源の一次情報をご確認ください。当サイトはゲーム公式運営および参照先の各サイト・チャンネルとは関係のない非公式のファンサイトです。</p>
   <p>本サイトはアクセス解析のためGoogle Analyticsを使用しており、Cookieを通じて閲覧状況(訪問回数・閲覧ページ・滞在時間・大まかな地域等)を収集しています。個人を特定する情報は収集していません。</p>
 </footer>
+
+<button id="back-to-top" class="back-to-top" type="button" aria-label="ページ上部へ戻る">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
 
 <script>
 const ELEMENTS = {
@@ -943,6 +986,14 @@ document.addEventListener("click", e=>{
   const pill = e.target.closest(".member-pill.jumpable");
   if(!pill) return;
   jumpToCharacter(pill.dataset.jump);
+});
+
+const backToTopBtn = document.getElementById("back-to-top");
+window.addEventListener("scroll", ()=>{
+  backToTopBtn.classList.toggle("visible", window.scrollY > 400);
+}, { passive: true });
+backToTopBtn.addEventListener("click", ()=>{
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 </body>
