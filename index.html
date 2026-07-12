@@ -337,7 +337,7 @@ const DATA = [
     stats:[["攻撃力","2300+"],["会心率","65%"],["会心ダメージ","260%"],["元素チャージ効率","110〜130%"]],
     teams:[
       {title:"編成①星電導本命", members:["サンドローネ","八重神子","神里綾華","ベネット"]},
-      {title:"編成②万能代替", members:["サンドローネ","雷電将軍","レイラ","鍾離"]}
+      {title:"編成②万能代替", members:["サンドローネ","雷電将軍","七七","鍾離"]}
     ],
     video:"https://www.youtube.com/watch?v=gHbIpoV-z8c", videoTitle:"サンドローネ完全解説！新元素反応「星電導」が強すぎる", confirmed:true },
 
@@ -648,6 +648,17 @@ const DATA = [
       {title:"編成②香菱コンボ", members:["ベネット","香菱","行秋","鍾離"]}
     ],
     video:"https://www.youtube.com/watch?v=Y07j0rLICIA", videoTitle:"Ver4.7「ベネット」おすすめ育成を完全解説", confirmed:true },
+
+  { name:"七七", element:"cryo", weapon:"片手剣", role:"サポート(氷共鳴／ヒーラー)", release:"Ver1.0 (2020/9)",
+    weapons:[{n:"天空の刃",t:"signature",note:"元素チャージ効率のサブステータスを持ち、攻撃力も伸ばせる汎用最適解の星5武器"},{n:"祭礼の剣",t:"f2p",note:"鍛造で無償入手できる星4。スキルの再発動間隔短縮で回復・氷元素付与の頻度を上げやすい"}],
+    artifact:{main:"千岩牢固(4セット)",alt:"海染硨磲(4セット・回復量をダメージに変換するサブアタッカー運用時)"},
+    mainStats:"時計:攻撃力％ or チャージ効率 / 杯:攻撃力％ / 冠:治癒効果(会心率も可)",
+    stats:[["元素チャージ効率","160〜180%目安"],["治癒効果","20〜30%(会心運用時は不要)"],["攻撃力","1500〜2000(サブステータスで確保)"]],
+    teams:[
+      {title:"編成①星電導サポート型", members:["七七","サンドローネ","雷電将軍","鍾離"]},
+      {title:"編成②永冻(凍結)サポート型", members:["七七","甘雨","モナ","楓原万葉"]}
+    ],
+    video:"https://www.youtube.com/watch?v=_qQ3DrYzoEk", videoTitle:"上方修正で星電導編成の必須級サポートに！「七七」最新解説！おすすめ武器・聖遺物・パーティ・目標ステータス", confirmed:true },
 ];
 
 function renderChips(){
