@@ -115,6 +115,19 @@
   .source-note a{ color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
   .source-note a:hover{ border-color: var(--accent); }
 
+  /* ---------- Tabs ---------- */
+  .tab-bar{
+    display:flex; gap:4px; max-width:1180px; margin:0 auto; padding:0 20px;
+    border-bottom:1px solid var(--border);
+  }
+  .tab-btn{
+    appearance:none; border:none; background:none; cursor:pointer; font-family:inherit;
+    padding:14px 16px; font-size:14px; font-weight:600; color:var(--muted);
+    border-bottom:2px solid transparent; margin-bottom:-1px; transition: color .15s, border-color .15s;
+  }
+  .tab-btn:hover{ color: var(--text); }
+  .tab-btn[aria-pressed="true"]{ color: var(--accent-strong); border-bottom-color: var(--accent); }
+
   /* ---------- Toolbar ---------- */
   .toolbar{
     position: sticky; top: 0; z-index: 20;
@@ -327,30 +340,39 @@
   </div>
 </header>
 
-<section class="meta-section">
-  <div class="meta-head">
-    <h2>現在の深境螺旋(スパイラルアビス) 人気編成ランキング</h2>
-    <span class="meta-updated" id="meta-updated"></span>
-  </div>
-  <div class="meta-grid" id="meta-grid"></div>
-  <div class="meta-source" id="meta-source"></div>
-</section>
+<nav class="tab-bar">
+  <button class="tab-btn" type="button" data-tab="characters" aria-pressed="true">キャラクター一覧</button>
+  <button class="tab-btn" type="button" data-tab="abyss" aria-pressed="false">螺旋人気編成ランキング</button>
+</nav>
 
-<div class="toolbar">
-  <div class="toolbar-inner">
-    <div class="search-box">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="search" type="text" placeholder="キャラクター名で検索…" autocomplete="off">
+<div id="tab-panel-abyss" hidden>
+  <section class="meta-section">
+    <div class="meta-head">
+      <h2>現在の深境螺旋(スパイラルアビス) 人気編成ランキング</h2>
+      <span class="meta-updated" id="meta-updated"></span>
     </div>
-    <div class="chip-row" id="element-chips"></div>
-    <div class="chip-row" id="weapon-chips"></div>
-    <div class="result-count" id="count"></div>
-  </div>
+    <div class="meta-grid" id="meta-grid"></div>
+    <div class="meta-source" id="meta-source"></div>
+  </section>
 </div>
 
-<main class="wrap">
-  <div class="grid" id="grid"></div>
-</main>
+<div id="tab-panel-characters">
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search" type="text" placeholder="キャラクター名で検索…" autocomplete="off">
+      </div>
+      <div class="chip-row" id="element-chips"></div>
+      <div class="chip-row" id="weapon-chips"></div>
+      <div class="result-count" id="count"></div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
 
 <footer>
   <div class="support-row">
@@ -889,9 +911,19 @@ document.getElementById("search").addEventListener("input", e=>{
   render();
 });
 
+function switchTab(tab){
+  document.getElementById("tab-panel-characters").hidden = tab!=="characters";
+  document.getElementById("tab-panel-abyss").hidden = tab!=="abyss";
+  document.querySelectorAll(".tab-btn").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.tab===tab)));
+}
+document.querySelectorAll(".tab-btn").forEach(b=>{
+  b.addEventListener("click", ()=> switchTab(b.dataset.tab));
+});
+
 function charId(name){ return "char-" + name; }
 
 function jumpToCharacter(name){
+  switchTab("characters");
   let target = document.getElementById(charId(name));
   if(!target){
     state = { el:"all", wp:"allw", q:"" };
