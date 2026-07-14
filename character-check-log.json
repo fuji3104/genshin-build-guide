@@ -1,6 +1,7 @@
 {
   "_note": "site-quality-checker maintains this file. Each entry records the last date that character's build (weapons/artifact/stats/teams) was individually freshness-checked against current guides. lastChecked:null means never individually checked yet (highest priority). On each quality-check run, sort ascending by lastChecked (null first, treated as oldest), audit the oldest batch (default 5 unless the user scopes it differently), then update lastChecked to today's date (YYYY-MM-DD) for every character actually audited in that run. Do not update the date for a character you didn't actually check. Keep this file's entries in sync with DATA in index.html: add a new null entry when site-character-researcher adds a character, remove an entry only if a character is removed from DATA.",
   "entries": [
+    { "name": "リンネア", "lastChecked": null },
     { "name": "サンドローネ", "lastChecked": "2026-07-13" },
     { "name": "プルーネ", "lastChecked": "2026-07-14" },
     { "name": "チャスカ", "lastChecked": "2026-07-14" },
