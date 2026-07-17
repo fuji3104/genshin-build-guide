@@ -971,7 +971,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=Qgg4LBrjreg", videoTitle:"エスコフィエで超強化！「神里綾華」Ver5.6最新解説", confirmed:true },
 
   { name:"楓原万葉", element:"anemo", weapon:"片手剣", role:"サポート(拡散)", release:"Ver1.6 (2021/6)",
-    weapons:[{n:"蒼古なる自由への誓い",t:"signature",note:"熟知とチーム全体バフを両立"}],
+    weapons:[{n:"蒼古なる自由への誓い",t:"signature",note:"熟知とチーム全体バフを両立"},{n:"鉄蜂の刺し",t:"f2p",note:"元素スキルダメージ寄りの無償代替"}],
     artifact:{main:"翠緑の影(4セット)",alt:"熟知を稼げれば代替も可"},
     mainStats:"時計:元素熟知 / 杯:元素熟知 / 冠:元素熟知",
     stats:[["元素熟知","800〜1000"],["元素チャージ効率","160%目安"]],
@@ -1020,7 +1020,7 @@ const DATA = [
 
   { name:"鍾離", element:"geo", weapon:"長柄武器", role:"シールダー／サポート", release:"Ver1.1 (2020/12)",
     weapons:[{n:"護摩の杖",t:"signature",note:"HPを大きく伸ばせる"},{n:"黒纓槍／西風長槍",t:"f2p",note:"チャージ効率が必要な編成向け"}],
-    artifact:{main:"千岩牢固(4セット)",alt:"HP寄りの構成でも可"},
+    artifact:{main:"千岩牢固(4セット)",alt:"千岩牢固(2セット)+花海甘露の光(2セット・HP寄せ構成)"},
     mainStats:"時計:HP％ / 杯:岩元素ダメージ or HP％ / 冠:HP％",
     stats:[["HP","50000+が目安"],["シールド強度","千岩4セットで安定"]],
     idealConst:"C0で運用可(次点はC1〜C2)",
@@ -1043,7 +1043,7 @@ const DATA = [
     video: CH_BASE+encodeURIComponent("クレー おすすめ武器 聖遺物"), videoTitle:"「クレー」の関連動画を検索", confirmed:false },
 
   { name:"行秋", element:"hydro", weapon:"片手剣", role:"サブアタッカー／サポート", release:"Ver1.0 (2020/9)",
-    weapons:[{n:"欲望の断片",t:"signature",note:"スキル発動頻度を上げやすい"},{n:"祭礼の剣",t:"f2p",note:"チャージ効率の底上げに有効"}],
+    weapons:[{n:"磐岩結緑",t:"signature",note:"会心率・攻撃力アップに加え被ダメ時にシールド発生"},{n:"祭礼の剣",t:"f2p",note:"チャージ効率の底上げに有効"}],
     artifact:{main:"絶縁の旗印(4セット)",alt:"深林の記憶2＋剣闘士のフィナーレ2"},
     mainStats:"時計:チャージ効率 / 杯:水元素ダメージ / 冠:会心",
     stats:[["元素チャージ効率","優先度最高"],["水元素ダメージ／会心","次点で強化"]],
@@ -1316,6 +1316,7 @@ function switchTab(tab){
   document.getElementById("tab-panel-characters").hidden = tab!=="characters";
   document.getElementById("tab-panel-abyss").hidden = tab!=="abyss";
   document.querySelectorAll(".tab-btn").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.tab===tab)));
+  if(typeof gtag==="function") gtag('event','tab_switch',{tab_name:tab});
 }
 document.querySelectorAll(".tab-btn").forEach(b=>{
   b.addEventListener("click", ()=> switchTab(b.dataset.tab));
@@ -1324,6 +1325,7 @@ document.querySelectorAll(".tab-btn").forEach(b=>{
 function charId(name){ return "char-" + name; }
 
 function jumpToCharacter(name){
+  if(typeof gtag==="function") gtag('event','character_jump',{character_name:name});
   switchTab("characters");
   let target = document.getElementById(charId(name));
   if(!target){
