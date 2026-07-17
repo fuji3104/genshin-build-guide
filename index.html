@@ -352,6 +352,47 @@
   }
   .confidence.confirmed{ background: color-mix(in srgb, var(--dendro) 18%, transparent); color: var(--dendro); }
   .confidence.inferred{ background: color-mix(in srgb, var(--muted) 20%, transparent); color: var(--muted); }
+  .confidence.warn{ background: color-mix(in srgb, var(--pyro) 18%, transparent); color: var(--pyro); }
+
+  .beta-badge{
+    display:inline-block; font-size:10px; font-weight:700; letter-spacing:0.03em;
+    padding:1px 7px; border-radius:999px; vertical-align:middle;
+    background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent-strong);
+  }
+
+  /* ---------- チーム編成ビルダー ---------- */
+  .team-builder-section{ max-width:1180px; margin:0 auto; padding:28px 20px 60px; }
+  .team-builder-heading{ font-size:18.5px; margin:0 0 6px; font-weight:700; }
+  .team-builder-desc{ font-size:12.5px; color:var(--muted); margin:0 0 20px; max-width:720px; line-height:1.6; }
+  .team-slot-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:14px; margin-bottom:26px; }
+  .team-slot{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:12px 14px; display:flex; flex-direction:column; gap:8px; box-shadow:var(--shadow);
+  }
+  .team-slot-label{ font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+  .team-slot-select{
+    font-family:inherit; font-size:13.5px; color:var(--text); background:var(--surface);
+    border:1px solid var(--border); border-radius:8px; padding:6px 8px; cursor:pointer; width:100%;
+  }
+  .team-slot-const{
+    font-family:inherit; font-size:12px; color:var(--text); background:var(--surface);
+    border:1px solid var(--border); border-radius:6px; padding:2px 6px; cursor:pointer; align-self:flex-start;
+  }
+  .team-slot-const:disabled{ opacity:0.5; cursor:not-allowed; }
+  .team-result{ display:flex; flex-direction:column; gap:22px; }
+  .role-tally{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+  .team-diag{
+    font-size:12.5px; padding:7px 12px; border-radius:8px; margin-bottom:6px;
+    background:var(--surface-2); color:var(--muted);
+  }
+  .team-diag.warn{ background:color-mix(in srgb, var(--pyro) 14%, transparent); color:var(--pyro); }
+  .team-diag.ok{ background:color-mix(in srgb, var(--dendro) 14%, transparent); color:var(--dendro); }
+  .reaction-list{ display:flex; flex-direction:column; gap:8px; }
+  .reaction-card{ display:flex; align-items:baseline; gap:10px; font-size:13px; flex-wrap:wrap; }
+  .reaction-desc{ color:var(--muted); font-size:12.5px; }
+  .const-list{ display:flex; flex-direction:column; gap:8px; }
+  .const-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px; }
+  .member-pill.matched{ border-color:var(--accent); background:var(--accent-soft); color:var(--accent-strong); font-weight:700; }
 
   footer{
     max-width:1180px; margin: 40px auto 0; padding: 24px 20px 0; border-top:1px solid var(--border);
@@ -419,6 +460,7 @@
 <nav class="tab-bar">
   <button class="tab-btn" type="button" data-tab="characters" aria-pressed="true">キャラクター一覧</button>
   <button class="tab-btn" type="button" data-tab="abyss" aria-pressed="false">螺旋人気編成ランキング</button>
+  <button class="tab-btn" type="button" data-tab="team" aria-pressed="false">チーム編成 <span class="beta-badge">Beta</span></button>
 </nav>
 
 <div id="tab-panel-abyss" hidden>
@@ -454,6 +496,17 @@
   </main>
 </div>
 
+<div id="tab-panel-team" hidden>
+  <main class="wrap">
+    <section class="team-builder-section">
+      <h2 class="team-builder-heading">チーム編成を組んで特性を診断 <span class="beta-badge">Beta</span></h2>
+      <p class="team-builder-desc">好きなキャラクター4人と凸数を選ぶと、元素反応・役割バランス・凸数の目安・既存おすすめ編成との一致度を自動で診断します。選択内容はこの端末(ブラウザ)にのみ保存され、サーバーへの送信はありません。この機能はベータ版です。診断結果は簡易ロジックによる目安であり、必ずしも正確とは限りません。</p>
+      <div class="team-slot-grid" id="team-slot-grid"></div>
+      <div class="team-result" id="team-result"></div>
+    </section>
+  </main>
+</div>
+
 <footer>
   <div class="support-row">
     <a class="support-link" href="https://ofuse.me/57a60673" target="_blank" rel="noopener">
@@ -481,6 +534,31 @@ const ELEMENTS = {
   geo:    { label: "岩", color: "var(--geo)",    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 19 21 5 21 2 8.5"/></svg>' },
 };
 const WEAPONS = ["両手剣","片手剣","長柄武器","弓","法器"];
+
+// チーム編成ビルダー(ベータ)用の静的テーブル。DATA自体には反応/役割の構造化フィールドを持たせず、
+// element/roleから計算・パースする方針(全キャラ分の新フィールド追加を避けるための設計)。
+const ROLE_VOCAB = ["メインアタッカー","サブアタッカー","サポート","ヒーラー","シールダー","バッファー"];
+const ELEMENT_REACTIONS = [
+  { elements:["pyro","hydro"],              name:"蒸発",     desc:"炎+水。順番により1.5倍/2倍の大ダメージ倍率。" },
+  { elements:["pyro","cryo"],               name:"溶解",     desc:"炎+氷。順番により1.5倍/2倍の大ダメージ倍率。" },
+  { elements:["hydro","electro"],           name:"感電",     desc:"水+雷。周囲に波及する継続ダメージ。" },
+  { elements:["cryo","electro"],            name:"超伝導",   desc:"氷+雷。ダメージ倍率は低いが物理耐性ダウン。" },
+  { elements:["hydro","cryo"],              name:"凍結",     desc:"水+氷。敵を拘束し、重撃で追加ダメージ。" },
+  { elements:["pyro","dendro"],             name:"燃焼",     desc:"炎+草。範囲に燃え広がる継続ダメージ。" },
+  { elements:["dendro","electro"],          name:"激化",     desc:"草+雷。以後の雷ダメージが強化される(激化・超激化)。" },
+  { elements:["dendro","hydro"],            name:"開花",     desc:"草+水。草核を生成し、追加で水/雷/炎を当てると派生反応に発展。" },
+  { elements:["anemo","pyro"],              name:"拡散(炎)", desc:"風が炎元素を拡散、範囲ダメージ+着火を拡散。" },
+  { elements:["anemo","hydro"],             name:"拡散(水)", desc:"風が水元素を拡散、範囲ダメージ+濡れを拡散。" },
+  { elements:["anemo","electro"],           name:"拡散(雷)", desc:"風が雷元素を拡散、範囲ダメージ+帯電を拡散。" },
+  { elements:["anemo","cryo"],              name:"拡散(氷)", desc:"風が氷元素を拡散、範囲ダメージ+着氷を拡散。" },
+  { elements:["geo","pyro"],                name:"結晶(炎)", desc:"岩が炎元素と反応し耐性シールドを生成。" },
+  { elements:["geo","hydro"],               name:"結晶(水)", desc:"岩が水元素と反応し耐性シールドを生成。" },
+  { elements:["geo","electro"],             name:"結晶(雷)", desc:"岩が雷元素と反応し耐性シールドを生成。" },
+  { elements:["geo","cryo"],                name:"結晶(氷)", desc:"岩が氷元素と反応し耐性シールドを生成。" },
+  { elements:["dendro","electro","anemo"],  name:"拡散スプレッド", desc:"草+雷+風。拡散が激化ダメージをばら撒く編成が組める。" },
+  { elements:["dendro","hydro","electro"],  name:"超開花",   desc:"草+水+雷。雷が草核を割り追加ダメージを発生。" },
+  { elements:["dendro","hydro","pyro"],     name:"烈開花",   desc:"草+水+炎。炎が草核を割り範囲爆発ダメージを発生。" },
+];
 
 // 螺旋人気編成ランキング(手動集計スナップショット。新しい順。大型パッチごとに先頭へ追加すること)
 const ABYSS_META_HISTORY = [
@@ -1146,6 +1224,17 @@ function loadOwned(){
 function saveOwned(){ localStorage.setItem(OWNED_KEY, JSON.stringify(ownedState)); }
 let ownedState = loadOwned();
 
+const TEAM_KEY = "genshinCompassTeam";
+function loadTeam(){
+  try{
+    const v = JSON.parse(localStorage.getItem(TEAM_KEY));
+    if(Array.isArray(v) && v.length===4) return v;
+  }catch(e){}
+  return [{name:null,c:0},{name:null,c:0},{name:null,c:0},{name:null,c:0}];
+}
+function saveTeam(){ localStorage.setItem(TEAM_KEY, JSON.stringify(teamState)); }
+let teamState = loadTeam();
+
 function matches(item){
   if(state.el!=="all" && item.element!==state.el) return false;
   if(state.wp!=="allw" && item.weapon!==state.wp) return false;
@@ -1274,10 +1363,187 @@ function renderAbyssMeta(index){
     `情報源: <a href="${period.sourceUrl}" target="_blank" rel="noopener">${period.sourceLabel}</a>。ランキングはバージョン更新のたびに新しい期間を追加します。`;
 }
 
+// ---- チーム編成ビルダー(ベータ) ----
+
+function teamCharOptions(selectedName){
+  let html = '<option value="">-- キャラクターを選択 --</option>';
+  DATA.forEach(d=>{
+    const el = ELEMENTS[d.element];
+    html += `<option value="${d.name}"${d.name===selectedName?' selected':''}>${d.name}(${el.label})</option>`;
+  });
+  return html;
+}
+
+function renderTeamSlots(){
+  const wrap = document.getElementById("team-slot-grid");
+  wrap.innerHTML = teamState.map((slot,i)=>{
+    const constOptions = [0,1,2,3,4,5,6].map(n=>
+      `<option value="${n}"${slot.c===n?' selected':''}>C${n}</option>`
+    ).join("");
+    return `
+    <div class="team-slot" data-slot="${i}">
+      <div class="team-slot-label">スロット${i+1}</div>
+      <select class="team-slot-select" data-slot="${i}">${teamCharOptions(slot.name)}</select>
+      <select class="team-slot-const" data-slot="${i}" ${slot.name?'':'disabled'}>${constOptions}</select>
+    </div>`;
+  }).join("");
+}
+
+function computeReactions(chosen){
+  const elementSet = new Set(chosen.map(s=>DATA.find(d=>d.name===s.name).element));
+  return ELEMENT_REACTIONS.filter(r=> r.elements.every(e=>elementSet.has(e)));
+}
+
+function renderReactionSection(chosen){
+  const elementSet = new Set(chosen.map(s=>DATA.find(d=>d.name===s.name).element));
+  const matched = computeReactions(chosen);
+  let body;
+  if(elementSet.size<=1){
+    body = `<div class="team-diag">同一属性中心の編成です。属性間の反応は発生しません(ダメージ純度重視型)。</div>`;
+  } else if(matched.length===0){
+    body = `<div class="team-diag">選択中の元素の組み合わせで直接発生する定番反応はありません。</div>`;
+  } else {
+    body = `<div class="reaction-list">` + matched.map(r=>
+      `<div class="reaction-card"><span class="meta-tag">${r.name}</span><span class="reaction-desc">${r.desc}</span></div>`
+    ).join("") + `</div>`;
+  }
+  return `<div class="section-label">元素反応</div>${body}`;
+}
+
+function parseRoles(roleText){
+  return roleText.replace(/\([^)]*\)/g, "").trim().split("／")
+    .map(s=>s.trim()).filter(t=>ROLE_VOCAB.includes(t));
+}
+
+function renderRoleBalanceSection(chosen){
+  const items = chosen.map(s=>DATA.find(d=>d.name===s.name));
+  const roleSet = new Set();
+  items.forEach(it=> parseRoles(it.role).forEach(r=>roleSet.add(r)));
+
+  const hasMain = roleSet.has("メインアタッカー");
+  const hasSustain = roleSet.has("ヒーラー") || roleSet.has("シールダー");
+  const hasSupport = roleSet.has("サポート") || roleSet.has("バッファー");
+
+  const diags = [];
+  if(!hasMain) diags.push({cls:"warn", text:"メインアタッカー不在(全体火力の軸がない可能性)"});
+  if(!hasSustain) diags.push({cls:"warn", text:"ヒーラー・シールダー不在(被ダメージ対策なし)"});
+  if(!hasSupport) diags.push({cls:"warn", text:"サポート・バッファー不在(バフによる底上げが薄い)"});
+  if(diags.length===0) diags.push({cls:"ok", text:"メインアタッカー・耐久・サポートが揃ったバランス編成です"});
+
+  const tally = [...roleSet].map(r=>`<span class="meta-tag">${r}</span>`).join("");
+  const diagHtml = diags.map(d=>`<div class="team-diag ${d.cls}">${d.text}</div>`).join("");
+  const partial = chosen.length<4
+    ? `<div class="team-diag">現在${chosen.length}/4人編成です。空きスロットがあるため参考情報です。</div>` : "";
+
+  return `<div class="section-label">役割バランス</div><div class="role-tally">${tally}</div>${diagHtml}${partial}`;
+}
+
+function extractConstLevels(text){
+  return [...text.matchAll(/C(\d)/g)].map(m=>Number(m[1]));
+}
+
+function renderConstSection(chosen){
+  const rows = chosen.map(slot=>{
+    const item = DATA.find(d=>d.name===slot.name);
+    const nums = extractConstLevels(item.idealConst);
+    let cls, msg;
+    if(nums.length===0){
+      cls = "inferred"; msg = `凸数目安の情報なし(原文: ${item.idealConst})`;
+    } else {
+      const baseline = nums[0];
+      const better = nums.length>1 ? Math.max(...nums) : baseline;
+      if(slot.c >= better){
+        cls = "confirmed"; msg = `理想の凸数ラインを満たしています(現在C${slot.c})`;
+      } else if(slot.c >= baseline){
+        cls = "inferred"; msg = `最低限の推奨ライン(C${baseline})は満たしています。理想はC${better}です。`;
+      } else {
+        cls = "warn"; msg = `推奨凸数C${baseline}に届いていません(現在C${slot.c})。無凸運用も可能ですが本領発揮はC${baseline}から。`;
+      }
+    }
+    return `<div class="const-row"><b>${item.name}</b>(C${slot.c})<span class="confidence ${cls}">${msg}</span></div>`;
+  }).join("");
+  return `<div class="section-label">凸数を踏まえたコメント</div><div class="const-list">${rows}</div>`;
+}
+
+function computeTeamsMatch(chosen){
+  const chosenSet = new Set(chosen.map(s=>s.name));
+  const results = [];
+  DATA.forEach(owner=>{
+    owner.teams.forEach(t=>{
+      const overlapNames = t.members.filter(m=>chosenSet.has(m));
+      if(overlapNames.length>=2){
+        results.push({ ownerName:owner.name, title:t.title, members:t.members, overlapNames, overlap:overlapNames.length });
+      }
+    });
+  });
+  results.sort((a,b)=> b.overlap - a.overlap);
+  return results;
+}
+
+function renderTeamsMatchSection(chosen){
+  if(chosen.length<2){
+    return `<div class="section-label">既存おすすめ編成との一致度</div><div class="team-diag">2人以上選択すると、近い既存編成を検索します。</div>`;
+  }
+  const matches = computeTeamsMatch(chosen).slice(0, 8);
+  if(matches.length===0){
+    return `<div class="section-label">既存おすすめ編成との一致度</div><div class="team-diag">一致度2人以上の既存編成は見つかりませんでした(オリジナル編成です)。</div>`;
+  }
+  const cards = matches.map(m=>{
+    const pills = m.members.map(name=>{
+      const isMatched = m.overlapNames.includes(name);
+      const known = DATA.some(d=>d.name===name);
+      return `<span class="member-pill ${isMatched?'matched':''} ${known?'jumpable':''}"${known?` data-jump="${name}"`:""}>${name}</span>`;
+    }).join("");
+    const full = m.overlap===4 ? `<span class="meta-tag">完全一致</span>` : "";
+    return `<div class="meta-card">
+      <div class="meta-rank-row">
+        <span class="meta-title">${m.ownerName}の「${m.title}」と4人中${m.overlap}人一致</span>${full}
+      </div>
+      <div class="meta-members">${pills}</div>
+    </div>`;
+  }).join("");
+  return `<div class="section-label">既存おすすめ編成との一致度</div><div class="meta-grid">${cards}</div>`;
+}
+
+function renderTeamResult(){
+  const result = document.getElementById("team-result");
+  const chosen = teamState.filter(s=>s.name);
+  if(chosen.length===0){
+    result.innerHTML = `<div class="empty-state">キャラクターを選択すると、ここに編成の診断結果が表示されます。</div>`;
+    return;
+  }
+  result.innerHTML =
+    `<div class="team-result-block">${renderReactionSection(chosen)}</div>` +
+    `<div class="team-result-block">${renderRoleBalanceSection(chosen)}</div>` +
+    `<div class="team-result-block">${renderConstSection(chosen)}</div>` +
+    `<div class="team-result-block">${renderTeamsMatchSection(chosen)}</div>`;
+}
+
+document.getElementById("team-slot-grid").addEventListener("change", e=>{
+  const sel = e.target.closest(".team-slot-select");
+  if(sel){
+    const i = Number(sel.dataset.slot);
+    teamState[i].name = sel.value || null;
+    saveTeam();
+    renderTeamSlots();
+    renderTeamResult();
+    return;
+  }
+  const csel = e.target.closest(".team-slot-const");
+  if(csel){
+    const i = Number(csel.dataset.slot);
+    teamState[i].c = Number(csel.value);
+    saveTeam();
+    renderTeamResult();
+  }
+});
+
 renderChips();
 render();
 renderPeriodSelect();
 renderAbyssMeta(0);
+renderTeamSlots();
+renderTeamResult();
 
 document.getElementById("element-chips").addEventListener("click", e=>{
   const b = e.target.closest(".chip"); if(!b) return;
@@ -1325,8 +1591,9 @@ document.addEventListener("change", e=>{
 });
 
 function switchTab(tab){
-  document.getElementById("tab-panel-characters").hidden = tab!=="characters";
-  document.getElementById("tab-panel-abyss").hidden = tab!=="abyss";
+  document.querySelectorAll("[id^='tab-panel-']").forEach(panel=>{
+    panel.hidden = panel.id !== ("tab-panel-" + tab);
+  });
   document.querySelectorAll(".tab-btn").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.tab===tab)));
   if(typeof gtag==="function") gtag('event','tab_switch',{tab_name:tab});
 }
