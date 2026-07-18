@@ -1146,7 +1146,7 @@ const DATA = [
 
   { name:"ベネット", element:"pyro", weapon:"片手剣", role:"バッファー／ヒーラー", release:"Ver1.0 (2020/9)",
     weapons:[{n:"天空の刃",t:"signature",note:"攻撃力とチャージ効率のバランスが良い"},{n:"西風剣",t:"f2p",note:"星4でチャージ効率補強"}],
-    artifact:{main:"旧貴族のしつけ(4セット)",alt:"編成次第で千岩牢固も選択肢"},
+    artifact:{main:"旧貴族のしつけ(4セット)",alt:"教官(4セット・蒸発/溶解編成でチャージ後元素熟知バフを活かす場合)"},
     mainStats:"時計:HP％ or チャージ効率 / 杯:HP％ / 冠:HP％",
     stats:[["元素チャージ効率","200%目安"],["HP","回復・シールド量に直結"]],
     idealConst:"C1(必須級)、伸ばすならC5",
@@ -1182,9 +1182,9 @@ const DATA = [
 
   { name:"ウェンティ", element:"anemo", weapon:"弓", role:"サポート(拡散)", release:"Ver1.0 (2020/9)",
     weapons:[{n:"終焉を嘆く詩",t:"signature",note:"チャージ効率を確保しつつ味方に元素熟知・攻撃力を配れるサポート特化のモチーフ武器"},{n:"絶弦",t:"f2p",note:"モンドの鍛造で入手できる代替候補。スキル・元素爆発ダメージと元素熟知を強化できる"}],
-    artifact:{main:"翠緑の影(4セット)",alt:"旧貴族のしつけ(4セット・翠緑が揃うまでの代替)"},
-    mainStats:"時計:元素熟知 or チャージ効率 / 杯:元素熟知 / 冠:元素熟知",
-    stats:[["元素熟知","700以上"],["元素チャージ効率","160%以上"]],
+    artifact:{main:"翠緑の影(4セット)",alt:"風立ちの日(4セット・Ver6.2実装。魔導秘儀による貫通通常攻撃を活かす攻撃型ビルドの選択肢。翠緑の影が整うまでの代替としては旧貴族のしつけも可)"},
+    mainStats:"時計:元素熟知 or チャージ効率 / 杯:元素熟知 / 冠:元素熟知(攻撃型ビルドは杯を会心ダメージ、冠を会心率に)",
+    stats:[["元素熟知","700以上(サポート型)"],["元素チャージ効率","160%以上"],["会心率/会心ダメージ","70%/140%目安(風立ちの日採用の攻撃型ビルド時)"]],
     idealConst:"C0、伸ばすならC2かC6",
     teams:[
       {title:"編成①拡散雷編成", members:["ウェンティ","雷電将軍","夜蘭","行秋"]},
@@ -1517,6 +1517,7 @@ function renderTeamResult(){
     `<div class="team-result-block">${renderRoleBalanceSection(chosen)}</div>` +
     `<div class="team-result-block">${renderConstSection(chosen)}</div>` +
     `<div class="team-result-block">${renderTeamsMatchSection(chosen)}</div>`;
+  if(chosen.length===4 && typeof gtag==="function") gtag('event','team_diagnosis_complete');
 }
 
 document.getElementById("team-slot-grid").addEventListener("change", e=>{
