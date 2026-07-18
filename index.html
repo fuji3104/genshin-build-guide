@@ -1585,6 +1585,8 @@ document.getElementById("team-slot-grid").addEventListener("change", e=>{
   if(sel){
     const i = Number(sel.dataset.slot);
     teamState[i].name = sel.value || null;
+    const owned = teamState[i].name ? ownedState[teamState[i].name] : null;
+    teamState[i].c = (owned && owned.owned) ? owned.c : 0;
     saveTeam();
     renderTeamSlots();
     renderTeamResult();
