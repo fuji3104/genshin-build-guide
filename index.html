@@ -10,9 +10,13 @@
 <meta property="og:description" content="攻略サイトやYouTube解説動画などをもとにした、原神キャラクターの理想ステータス・おすすめ聖遺物・武器・深境螺旋編成まとめ">
 <meta property="og:url" content="https://genshin.gcompass.net/">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://genshin.gcompass.net/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="原神 育成コンパス — 各種攻略情報まとめ">
 <meta name="twitter:description" content="攻略サイトやYouTube解説動画などをもとにした、原神キャラクターの理想ステータス・おすすめ聖遺物・武器・深境螺旋編成まとめ">
+<meta name="twitter:image" content="https://genshin.gcompass.net/og-image.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DT5YJ6PZEM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -590,7 +594,7 @@ const ABYSS_META_HISTORY = [
   {
     version: "Ver6.5",
     dateRange: "2026年4月8日〜5月19日",
-    sourceLabel: "gamebird「Ver6.5後半深境螺旋12層のキャラ使用率とパーティ編成」(中国圏の使用率データを基に集計)",
+    sourceLabel: "gamebird「Ver6.5後半深境螺旋12層のキャラ使用率とパーティ編成」(中国圏の使用率データを基に集計。出典元は同一URLをバージョン更新ごとに上書きするため、現在アクセスすると新しい版の内容が表示されます。上記はVer6.5後半時点で記録した数値です)",
     sourceUrl: "https://tori-game.com/rasen/",
     teams: [
       { rank:1, title:"月開花本命型", tag:"",
@@ -1698,6 +1702,9 @@ function expandDetails(card){
 }
 
 document.addEventListener("click", e=>{
+  const supportLink = e.target.closest(".support-link");
+  if(supportLink){ if(typeof gtag==="function") gtag('event','support_click',{method:'ofuse'}); return; }
+
   const pill = e.target.closest(".member-pill.jumpable");
   if(pill){ jumpToCharacter(pill.dataset.jump); return; }
 
