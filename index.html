@@ -452,7 +452,7 @@
   <div class="hero-inner">
     <div class="eyebrow">Genshin Impact / 育成データベース</div>
     <h1>原神 育成コンパス</h1>
-    <p class="lead">攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている原神の育成情報をもとに、人気・主要キャラクター58体の理想ステータス・おすすめ聖遺物・おすすめ武器を一覧にまとめました。各キャラクターには深境螺旋(スパイラルアビス)を想定したおすすめ編成を2パターンずつ掲載しています。実装が新しいキャラクターから順に掲載しています。</p>
+    <p class="lead">攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている原神の育成情報をもとに、人気・主要キャラクター61体の理想ステータス・おすすめ聖遺物・おすすめ武器を一覧にまとめました。各キャラクターには深境螺旋(スパイラルアビス)を想定したおすすめ編成を2パターンずつ掲載しています。実装が新しいキャラクターから順に掲載しています。</p>
     <div class="source-note">
       <span><strong>情報源：</strong>ゲーム攻略サイト・YouTube解説動画など、一般に公開されている複数の情報を参照</span>
       <span>非公式のファンメイドまとめです。ゲームのバージョン更新により最新の解説と数値が異なる場合があります。</span>
@@ -631,6 +631,18 @@ const DATA = [
     ],
     video:"https://www.youtube.com/watch?v=gHbIpoV-z8c", videoTitle:"サンドローネ完全解説！新元素反応「星電導」が強すぎる", confirmed:true },
 
+  { name:"ローエン", element:"cryo", weapon:"長柄武器", role:"メインアタッカー(氷元素重撃・溶解反応)", release:"Ver6.6 (2026/6)",
+    weapons:[{n:"災憾",t:"signature",note:"攻撃力を大幅に伸ばし、通常攻撃・重撃・スキル・元素爆発のダメージも底上げするモチーフ長柄武器"},{n:"和璞鳶",t:"f2p",note:"恒常武器ながら会心率22.1%を確保でき、攻撃頻度の高いローエンなら効果も発動させやすい代替候補"}],
+    artifact:{main:"風立ちの日(4セット)",alt:"氷風を彷徨う勇士(4セット・凍結編成での会心率底上げに有効)"},
+    mainStats:"時計:攻撃力％ / 杯:氷元素ダメージ％ / 冠:会心率／会心ダメージ",
+    stats:[["攻撃力","2000以上"],["会心率","80%"],["会心ダメージ","200%以上"]],
+    idealConst:"C0で基本性能は完成、伸ばすならC2(会心ダメージ強化があり強力との評価もあるが、モチーフ武器優先を推す意見もあり評価は分かれる)",
+    teams:[
+      {title:"編成①溶解本命", members:["ローエン","ドゥリン","シロネン","ニコ"]},
+      {title:"編成②凍結代替", members:["ローエン","フリーナ","モナ","エスコフィエ"]}
+    ],
+    video:"https://www.youtube.com/watch?v=3ox3mgLUbGA", videoTitle:"強化スキルは2回まで「ローエン」パーティー・ビルド・立ち回りガイド", confirmed:true },
+
   { name:"ニコ", element:"pyro", weapon:"法器", role:"サポート(シールド+攻撃力バフ)", release:"Ver6.6 (2026/5)",
     weapons:[{n:"塵と光の七つの誓約",t:"signature",note:"攻撃力を大きく伸ばし、シールド発動時のバフ量にも直結するモチーフ武器"},{n:"白辰の輪",t:"f2p",note:"稲妻の世界任務クリアで鍛造できる無償入手可能な代替候補"}],
     artifact:{main:"天からの贈り物(4セット)",alt:"剣闘士のフィナーレ2＋追憶のしめ縄2(代替構成)"},
@@ -654,18 +666,6 @@ const DATA = [
       {title:"編成②ヌヴィレット軸蒸発型", members:["プルーネ","ヌヴィレット","フリーナ","ドゥリン"]}
     ],
     video:"https://www.youtube.com/watch?v=JqVStfXvW4Y", videoTitle:"「プルーネ」徹底解説 攻撃力4000到達法・武器・聖遺物・編成", confirmed:true },
-
-  { name:"ローエン", element:"cryo", weapon:"長柄武器", role:"メインアタッカー(氷元素重撃・溶解反応)", release:"Ver6.6 (2026/6)",
-    weapons:[{n:"災憾",t:"signature",note:"攻撃力を大幅に伸ばし、通常攻撃・重撃・スキル・元素爆発のダメージも底上げするモチーフ長柄武器"},{n:"和璞鳶",t:"f2p",note:"恒常武器ながら会心率22.1%を確保でき、攻撃頻度の高いローエンなら効果も発動させやすい代替候補"}],
-    artifact:{main:"風立ちの日(4セット)",alt:"氷風を彷徨う勇士(4セット・凍結編成での会心率底上げに有効)"},
-    mainStats:"時計:攻撃力％ / 杯:氷元素ダメージ％ / 冠:会心率／会心ダメージ",
-    stats:[["攻撃力","2000以上"],["会心率","80%"],["会心ダメージ","200%以上"]],
-    idealConst:"C0で基本性能は完成、伸ばすならC2(会心ダメージ強化があり強力との評価もあるが、モチーフ武器優先を推す意見もあり評価は分かれる)",
-    teams:[
-      {title:"編成①溶解本命", members:["ローエン","ドゥリン","シロネン","ニコ"]},
-      {title:"編成②凍結代替", members:["ローエン","フリーナ","モナ","エスコフィエ"]}
-    ],
-    video:"https://www.youtube.com/watch?v=3ox3mgLUbGA", videoTitle:"強化スキルは2回まで「ローエン」パーティー・ビルド・立ち回りガイド", confirmed:true },
 
   { name:"リンネア", element:"geo", weapon:"弓", role:"サポート(月結晶反応バフ／回復)", release:"Ver6.5 (2026/4)",
     weapons:[{n:"霜契の金枝",t:"signature",note:"防御力と会心ダメージを強化し、岩元素ダメージ・月結晶反応ダメージも底上げするモチーフ弓"},{n:"弾弓",t:"f2p",note:"星3ながら会心率を確保でき、無凸でもモチーフ武器に匹敵する火力を出せる代替候補"}],
@@ -811,6 +811,18 @@ const DATA = [
     ],
     video:"https://www.youtube.com/watch?v=ajEodqTqcXA", videoTitle:"【原神】最高峰サブアタ&回復キャラ！LunaVでもエスコフィエは引くべき？オススメ武器や編成、聖遺物と現環境でも強いかを解説！", confirmed:true },
 
+  { name:"ヴァレサ", element:"electro", weapon:"法器", role:"メインアタッカー(落下攻撃特化)", release:"Ver5.5 (2025/3)",
+    weapons:[{n:"ヴィヴィッド・ハート",t:"signature",note:"攻撃力を伸ばしつつ落下攻撃の会心ダメージを大幅に強化する専用モチーフ法器"},{n:"純水流華",t:"f2p",note:"攻撃力バフを持つ鍛造武器の代替候補。効果を活かすにはヒーラー編成が前提"}],
+    artifact:{main:"長き夜の誓い(4セット)",alt:"黒曜の秘典(4セット)"},
+    mainStats:"時計:攻撃力% / 杯:雷元素ダメージ / 冠:会心ダメージ(会心率)",
+    stats:[["攻撃力","2000程度"],["会心率","80%"],["会心ダメージ","200%"]],
+    idealConst:"無凸でも運用可能。伸ばすならC2推奨(強化元素爆発の発動条件緩和・DPS上昇)。ただし凸よりモチーフ武器「ヴィヴィッド・ハート」入手を優先すべきとの声も",
+    teams:[
+      {title:"編成①キャリー型(閑雲軸)", members:["ヴァレサ","フリーナ","閑雲","イアンサ"]},
+      {title:"編成②シュヴルーズ過負荷型", members:["ヴァレサ","イアンサ","ベネット","シュヴルーズ"]}
+    ],
+    video:"https://www.youtube.com/watch?v=2SKHXogyH9k", videoTitle:"この武器と聖遺物を用意すれば完璧！ヴァレサの育成解説！", confirmed:true },
+
   { name:"マーヴィカ", element:"pyro", weapon:"両手剣", role:"メインアタッカー", release:"Ver5.3 (2025/1)",
     weapons:[{n:"千烈の日輪",t:"signature",note:"攻撃力と会心ダメージを強化"}],
     artifact:{main:"黒曜の秘典(4セット)",alt:"灰燼の都に立つ英雄の絵巻(サブアタッカー運用時)"},
@@ -871,6 +883,18 @@ const DATA = [
     ],
     video:"https://www.youtube.com/watch?v=B2Yua2CmQkY", videoTitle:"現環境最強サポーター！「シロネン」Ver5.5最新解説！おすすめ武器・聖遺物・パーティ・目標ステータス", confirmed:true },
 
+  { name:"キィニチ", element:"dendro", weapon:"両手剣", role:"メインアタッカー(燃焼反応・夜魂の加護)", release:"Ver5.0 (2024/9)",
+    weapons:[{n:"山の王の長牙",t:"signature",note:"元素スキルのヒットで元素スキル・元素爆発ダメージが段階的に強化される専用モチーフ両手剣"},{n:"螭龍の剣",t:"f2p",note:"会心率と多段ヒット時の追加ダメージを確保できる無償入手可能な代替候補"}],
+    artifact:{main:"黒曜の秘典(4セット)",alt:"遂げられなかった想い(4セット・燃焼状態維持で最大ダメージバフ)"},
+    mainStats:"時計:攻撃力% / 杯:草元素ダメージ / 冠:会心ダメージ(会心率)",
+    stats:[["攻撃力","2000以上"],["会心率","70%程度(黒曜の秘典の会心率バフ込み)"],["会心ダメージ","200%以上"]],
+    idealConst:"C0でも十分戦えるが、伸ばすならC2推奨(草元素耐性デバフ・与ダメ強化。ただし凸よりモチーフ武器入手を優先すべきとの声も)",
+    teams:[
+      {title:"編成①燃焼特化型", members:["キィニチ","エミリエ","ドゥリン","ニコ"]},
+      {title:"編成②燃焼蒸発型", members:["キィニチ","フリーナ","香菱","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=W6D7S6cFPYU", videoTitle:"実装時から評価が爆上がり！「キィニチ」Ver5.6最新解説！おすすめ武器・聖遺物・パーティ・目標ステータス", confirmed:true },
+
   { name:"ムアラニ", element:"hydro", weapon:"法器", role:"メインアタッカー(強化通常攻撃・蒸発反応)", release:"Ver5.0 (2024/8)",
     weapons:[{n:"サーフィンタイム",t:"signature",note:"HPと会心ダメージ88.2%を大幅に強化し、通常攻撃ダメージも底上げするモチーフ法器"},{n:"ヤシュチェの環",t:"f2p",note:"鍛造で入手できる代替候補。HP％を強化し通常攻撃ダメージも上昇するが、会心は聖遺物側で補う必要がある"}],
     artifact:{main:"黒曜の秘典(4セット)",alt:"沈淪の心(4セット・黒曜の秘典が揃うまでの代替)"},
@@ -882,6 +906,18 @@ const DATA = [
       {title:"編成②凍結型", members:["ムアラニ","フリーナ","エスコフィエ","シトラリ"]}
     ],
     video:"https://www.youtube.com/watch?v=5PsRg01EvD4", videoTitle:"超火力蒸発アタッカー！「ムアラニ」Ver5.8最新解説！おすすめ武器・聖遺物・パーティ・目標ステータス", confirmed:true },
+
+  { name:"エミリエ", element:"dendro", weapon:"長柄武器", role:"サブアタッカー(燃焼反応・追撃型)", release:"Ver4.8 (2024/8)",
+    weapons:[{n:"ルミドゥースの挽歌",t:"signature",note:"会心率を確保しつつ燃焼反応発生時に追加の与ダメージバフを得られる専用モチーフ長柄武器"},{n:"死闘の槍",t:"f2p",note:"バトルパスで入手できる代替候補。攻撃力バフと元素チャージ効率を両立"}],
+    artifact:{main:"遂げられなかった想い(4セット)",alt:"深林の記憶(4セット・草元素キャラが編成にいない場合の代替)"},
+    mainStats:"時計:攻撃力% / 杯:草元素ダメージ or 攻撃力% / 冠:会心ダメージ(会心率)",
+    stats:[["攻撃力","2000〜2400"],["会心率","70〜80%"],["会心ダメージ","200%以上"]],
+    idealConst:"無凸でも十分戦えるが、伸ばすならC2推奨(草元素耐性デバフ・威力アップ。凸よりモチーフ武器優先の声も)",
+    teams:[
+      {title:"編成①燃焼特化型(キィニチ軸)", members:["エミリエ","キィニチ","ドゥリン","ニコ"]},
+      {title:"編成②炎共鳴燃焼型", members:["エミリエ","アルレッキーノ","楓原万葉","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=XIJZsyH1iI0", videoTitle:"深林4セットでOK！エミリエの最強武器・聖遺物・ステータスガイド", confirmed:true },
 
   { name:"クロリンデ", element:"electro", weapon:"片手剣", role:"メインアタッカー(通常攻撃連打)", release:"Ver4.7 (2024/6)",
     weapons:[{n:"赦罪",t:"signature",note:"会心ダメージと与ダメージバフが優秀"},{n:"黒剣",t:"f2p",note:"通常攻撃ダメージバフを持つ星4代替"}],
@@ -1785,6 +1821,37 @@ window.addEventListener("scroll", ()=>{
 backToTopBtn.addEventListener("click", ()=>{
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+// --- SEO: structured data (JSON-LD) ---
+// DATA配列から動的生成するため、キャラ追加時のメンテナンス不要(手動同期不要)。
+// レビュー・評価等の架空情報は含めず、実データのみを反映する。
+(function injectStructuredData(){
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "原神 育成コンパス",
+    "url": "https://genshin.gcompass.net/",
+    "description": "攻略サイトやYouTube解説動画などをもとにした、原神キャラクターの理想ステータス・おすすめ聖遺物・武器・深境螺旋編成まとめ(非公式ファンサイト)",
+    "inLanguage": "ja"
+  };
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "収録キャラクター一覧",
+    "itemListElement": DATA.map((c, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": c.name,
+      "url": "https://genshin.gcompass.net/#" + charId(c.name)
+    }))
+  };
+  [website, itemList].forEach(obj => {
+    const s = document.createElement("script");
+    s.type = "application/ld+json";
+    s.textContent = JSON.stringify(obj);
+    document.head.appendChild(s);
+  });
+})();
 </script>
 </body>
 </html>
