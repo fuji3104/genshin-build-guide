@@ -402,6 +402,7 @@
     color: var(--muted); font-size:12.5px;
   }
   .support-row{ margin-bottom: 16px; }
+  .support-row-hero{ margin-top: 18px; margin-bottom: 0; }
   .support-link{
     display:inline-flex; align-items:center; gap:6px;
     font-size:12.5px; font-weight:600; color: var(--accent);
@@ -452,10 +453,16 @@
   <div class="hero-inner">
     <div class="eyebrow">Genshin Impact / 育成データベース</div>
     <h1>原神 育成コンパス</h1>
-    <p class="lead">攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている原神の育成情報をもとに、人気・主要キャラクター61体の理想ステータス・おすすめ聖遺物・おすすめ武器を一覧にまとめました。各キャラクターには深境螺旋(スパイラルアビス)を想定したおすすめ編成を2パターンずつ掲載しています。実装が新しいキャラクターから順に掲載しています。</p>
+    <p class="lead">攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている原神の育成情報をもとに、人気・主要キャラクター63体の理想ステータス・おすすめ聖遺物・おすすめ武器を一覧にまとめました。各キャラクターには深境螺旋(スパイラルアビス)を想定したおすすめ編成を2パターンずつ掲載しています。実装が新しいキャラクターから順に掲載しています。</p>
     <div class="source-note">
       <span><strong>情報源：</strong>ゲーム攻略サイト・YouTube解説動画など、一般に公開されている複数の情報を参照</span>
       <span>非公式のファンメイドまとめです。ゲームのバージョン更新により最新の解説と数値が異なる場合があります。</span>
+    </div>
+    <div class="support-row support-row-hero">
+      <a class="support-link" href="https://ofuse.me/57a60673" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        このサイトを応援する(Ofuse)
+      </a>
     </div>
   </div>
 </header>
@@ -626,7 +633,7 @@ const DATA = [
     stats:[["攻撃力","2300+"],["会心率","65%"],["会心ダメージ","260%"],["元素チャージ効率","110〜130%"]],
     idealConst:"C0で完成、伸ばすならC2",
     teams:[
-      {title:"編成①星電導本命", members:["サンドローネ","八重神子","神里綾華","ベネット"]},
+      {title:"編成①星電導本命", members:["サンドローネ","八重神子","神里綾華","エスコフィエ"]},
       {title:"編成②万能代替", members:["サンドローネ","雷電将軍","七七","鍾離"]}
     ],
     video:"https://www.youtube.com/watch?v=gHbIpoV-z8c", videoTitle:"サンドローネ完全解説！新元素反応「星電導」が強すぎる", confirmed:true },
@@ -942,6 +949,18 @@ const DATA = [
       {title:"編成②バフ特化型", members:["アルレッキーノ","鍾離","行秋","ベネット"]}
     ],
     video:"https://www.youtube.com/watch?v=UvveKBw7d6c", videoTitle:"シトラリで編成が激変！「召使」Ver5.3最新解説", confirmed:true },
+
+  { name:"閑雲", element:"anemo", weapon:"法器", role:"サポート(重撃・落下攻撃バフ＋全体回復)", release:"Ver4.4 (2024/1)",
+    weapons:[{n:"鶴鳴の余韻",t:"signature",note:"攻撃力を伸ばしつつ、味方の落下攻撃ダメージ強化・元素爆発発動時のエネルギー回復も得られるモチーフ法器"},{n:"誓いの明瞳",t:"f2p",note:"稲妻の世界任務クリアで鍛造できる無償入手可能な代替候補。元素スキル使用後に元素チャージ効率を高められる"}],
+    artifact:{main:"在りし日の歌(4セット)",alt:"翠緑の影(4セット・拡散反応を絡める編成向け)"},
+    mainStats:"時計:攻撃力％ or 元素チャージ効率 / 杯:攻撃力％ / 冠:治癒効果／攻撃力％",
+    stats:[["攻撃力","4000以上(固有バフの実用的な目安。理論上限は4500)"],["元素チャージ効率","150〜180%(編成や武器で変動)"]],
+    idealConst:"C0で基本性能は完成、火力サポートを伸ばすならC2(固有バフの上限値が2倍になり、魈・荒瀧一斗など重撃/落下攻撃アタッカーの火力を大きく底上げ)",
+    teams:[
+      {title:"編成①魈軸プランジ特化型", members:["閑雲","魈","フリーナ","ベネット"]},
+      {title:"編成②閑雲メインアタッカー型(拡散)", members:["閑雲","フリーナ","ファルザン","ベネット"]}
+    ],
+    video:"https://www.youtube.com/watch?v=E-ZsXotrDCI", videoTitle:"Ver5.5最新版！「閑雲」の使い方・育成・編成を解説！ おすすめ武器・聖遺物・パーティ・目標ステータス", confirmed:true },
 
   { name:"ナヴィア", element:"geo", weapon:"両手剣", role:"メインアタッカー(重撃)", release:"Ver4.3 (2023/12)",
     weapons:[{n:"裁断",t:"signature",note:"攻撃力とスキルダメージを両立"},{n:"アースシェイカー／タイダル・シャドー",t:"f2p",note:"無償入手できる代替候補"}],
@@ -1350,6 +1369,18 @@ const DATA = [
       {title:"編成②凍結モノハイドロ型", members:["モナ","スカーク","エスコフィエ","フリーナ"]}
     ],
     video:"https://www.youtube.com/watch?v=PUIsLKJBR-w", videoTitle:"【原神】スカーク＆エスコで死ぬほど強化された「モナ」Ver.5.7最新版性能解説！おすすめ武器や聖遺物についても解説します【VOICEVOX解説】ずんだもん", confirmed:true },
+
+  { name:"ディルック", element:"pyro", weapon:"両手剣", role:"メインアタッカー(炎元素・蒸発反応/烈開花)", release:"Ver1.0 (2020/9)",
+    weapons:[{n:"狼の末路",t:"signature",note:"会心ダメージを大きく伸ばし、敵のHPが50%以下だと更に攻撃力が上昇するモチーフ両手剣"},{n:"螭龍の剣",t:"f2p",note:"璃月/稲妻の紀行で入手できる星4両手剣。会心率と多段ヒット時の追加ダメージを確保できる無償入手可能な代替候補"}],
+    artifact:{main:"燃え盛る炎の魔女(4セット)",alt:"剣闘士のフィナーレ(4セット・炎元素ダメージの代わりに攻撃力を確保できる代替候補)"},
+    mainStats:"時計:攻撃力％ / 杯:炎元素ダメージ％ / 冠:会心率／会心ダメージ",
+    stats:[["攻撃力","2000以上"],["会心率","70%以上"],["会心ダメージ","180%以上"]],
+    idealConst:"C0で完成、伸ばすならC2まではコスパ良好。C4で元素スキルの連続ダメージが強化されさらに伸びる(2ソースで一致)",
+    teams:[
+      {title:"編成①蒸発本命型", members:["ディルック","行秋","楓原万葉","ベネット"]},
+      {title:"編成②烈開花型", members:["ディルック","ナヒーダ","夜蘭","白朮"]}
+    ],
+    video:"https://www.youtube.com/watch?v=GSN3hg62do8", videoTitle:"これがLv90完凸！素で2.4万ダメの最強『ディルック』への道、おすすめ武器と聖遺物をお見せします。", confirmed:true },
 ];
 
 function renderChips(){
