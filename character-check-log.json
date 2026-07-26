@@ -6,9 +6,6 @@
     { "name": "プルーネ", "lastChecked": "2026-07-14" },
     { "name": "チャスカ", "lastChecked": "2026-07-14" },
     { "name": "ニコ", "lastChecked": "2026-07-25" },
-    { "name": "ファルカ", "lastChecked": "2026-07-13" },
-    { "name": "コロンビーナ", "lastChecked": "2026-07-13" },
-    { "name": "ドゥリン", "lastChecked": "2026-07-13" },
     { "name": "ネフェル", "lastChecked": "2026-07-14" },
     { "name": "フリンズ", "lastChecked": "2026-07-14" },
     { "name": "ラウマ", "lastChecked": "2026-07-14" },
@@ -62,7 +59,13 @@
     { "name": "ヴァレサ", "lastChecked": "2026-07-25" },
     { "name": "キィニチ", "lastChecked": "2026-07-25" },
     { "name": "エミリエ", "lastChecked": "2026-07-25" },
-    { "name": "閑雲", "lastChecked": null },
-    { "name": "ディルック", "lastChecked": null }
+    { "name": "閑雲", "lastChecked": "2026-07-26" },
+    { "name": "ディルック", "lastChecked": "2026-07-26" },
+    { "name": "ファルカ", "lastChecked": "2026-07-26" },
+    { "name": "コロンビーナ", "lastChecked": "2026-07-26" },
+    { "name": "ドゥリン", "lastChecked": "2026-07-26" },
+    { "name": "刻晴", "lastChecked": null },
+    { "name": "セノ", "lastChecked": null },
+    { "name": "シグウィン", "lastChecked": null }
   ]
 }
