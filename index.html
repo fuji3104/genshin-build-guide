@@ -279,6 +279,7 @@
   .artifact-block{ font-size:13.5px; }
   .artifact-main{ font-weight:700; margin-bottom:2px; }
   .artifact-alt{ color: var(--muted); font-size:12.5px; }
+  .artifact-related{ margin-top:6px; font-size:12px; color: var(--muted); display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; }
 
   .stat-table{ width:100%; border-collapse:collapse; font-size:13px; }
   .stat-table td{ padding: 3px 0; }
@@ -412,6 +413,13 @@
   .support-link:hover{ border-color: var(--accent); background: var(--accent-soft); }
   .support-link svg{ flex:none; }
 
+  /* ---------- FAQ ---------- */
+  .faq-section{ padding: 40px 0; border-top: 1px solid var(--border); }
+  .faq-section h2{ font-size: 20px; margin: 0 0 16px; color: var(--text); }
+  .faq-list{ display:flex; flex-direction:column; gap:16px; }
+  .faq-item h3{ font-size:14.5px; margin:0 0 4px; color: var(--text); }
+  .faq-item p{ margin:0; color: var(--muted); font-size:13.5px; line-height:1.7; }
+
   /* ---------- Back to top ---------- */
   .back-to-top{
     position: fixed; right: 20px; bottom: 20px; z-index: 30;
@@ -516,6 +524,82 @@
     </section>
   </main>
 </div>
+
+<section class="faq-section" aria-labelledby="faq-heading">
+  <div class="wrap">
+    <h2 id="faq-heading">よくある質問</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>このサイトはどんな内容ですか?</h3>
+        <p>原神(Genshin Impact)の人気・主要キャラクターについて、攻略サイトやYouTube解説動画などの公開情報をもとに、おすすめの武器・聖遺物・目標ステータス・深境螺旋(スパイラルアビス)向けの編成例をキャラクターごとにまとめた非公式のファンサイトです。</p>
+      </div>
+      <div class="faq-item">
+        <h3>情報源はどこですか?</h3>
+        <p>特定の1サイト・1チャンネルに限定せず、ゲーム攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている複数の情報を参照しています。個別の動画を確認できたキャラクターには「個別ソース確認済み」バッジを、複数情報から編集部が集約した推定にはその旨を明記しています。</p>
+      </div>
+      <div class="faq-item">
+        <h3>情報はどのくらいの頻度で更新されますか?</h3>
+        <p>新キャラクターの実装や大型バージョン更新のタイミングに加え、既存キャラクターの推奨装備・ステータスも定期的に見直しています。ただしゲーム側の環境変化に対して更新が追いつかない場合があるため、正確な最新情報は各情報源の一次情報もあわせてご確認ください。</p>
+      </div>
+      <div class="faq-item">
+        <h3>「所持」「凸数」の登録データはどこに保存されますか?</h3>
+        <p>お使いのブラウザ内(localStorage)にのみ保存され、サーバーには送信されません。ブラウザやデバイスを変更すると登録内容は引き継がれません。</p>
+      </div>
+      <div class="faq-item">
+        <h3>原神の公式サイトですか?</h3>
+        <p>いいえ、公式運営(HoYoverse)や参照先の各サイト・チャンネルとは関係のない非公式のファンサイトです。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "このサイトはどんな内容ですか?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "原神(Genshin Impact)の人気・主要キャラクターについて、攻略サイトやYouTube解説動画などの公開情報をもとに、おすすめの武器・聖遺物・目標ステータス・深境螺旋(スパイラルアビス)向けの編成例をキャラクターごとにまとめた非公式のファンサイトです。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "情報源はどこですか?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "特定の1サイト・1チャンネルに限定せず、ゲーム攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている複数の情報を参照しています。個別の動画を確認できたキャラクターには「個別ソース確認済み」バッジを、複数情報から編集部が集約した推定にはその旨を明記しています。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "情報はどのくらいの頻度で更新されますか?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "新キャラクターの実装や大型バージョン更新のタイミングに加え、既存キャラクターの推奨装備・ステータスも定期的に見直しています。ただしゲーム側の環境変化に対して更新が追いつかない場合があるため、正確な最新情報は各情報源の一次情報もあわせてご確認ください。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "「所持」「凸数」の登録データはどこに保存されますか?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "お使いのブラウザ内(localStorage)にのみ保存され、サーバーには送信されません。ブラウザやデバイスを変更すると登録内容は引き継がれません。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "原神の公式サイトですか?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "いいえ、公式運営(HoYoverse)や参照先の各サイト・チャンネルとは関係のない非公式のファンサイトです。"
+      }
+    }
+  ]
+}
+</script>
 
 <footer>
   <div class="support-row">
@@ -1419,6 +1503,10 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=GSN3hg62do8", videoTitle:"これがLv90完凸！素で2.4万ダメの最強『ディルック』への道、おすすめ武器と聖遺物をお見せします。", confirmed:true },
 ];
 
+function relatedByArtifact(item){
+  return DATA.filter(d => d.name!==item.name && d.artifact.main === item.artifact.main).map(d=>d.name);
+}
+
 function renderChips(){
   const elWrap = document.getElementById("element-chips");
   const allElChip = chipEl("全属性", "all", null);
@@ -1492,6 +1580,11 @@ function card(item){
     `<option value="${n}"${ownedInfo.c===n?' selected':''}>C${n}</option>`
   ).join("");
 
+  const related = relatedByArtifact(item);
+  const relatedHtml = (related.length>=1 && related.length<=6)
+    ? `<div class="artifact-related">同じ聖遺物セット: ${related.map(n=>`<span class="member-pill jumpable" data-jump="${n}">${n}</span>`).join("")}</div>`
+    : "";
+
   return `
   <article class="card ${ownedInfo.owned?'owned':''}" id="${charId(item.name)}" style="--el:${el.color}">
     <div class="card-head">
@@ -1527,6 +1620,7 @@ function card(item){
         <div class="section-label" style="color:${el.color}">おすすめ聖遺物</div>
         <div class="artifact-main">${item.artifact.main}</div>
         <div class="artifact-alt">代替: ${item.artifact.alt}</div>
+        ${relatedHtml}
       </div>
       <div>
         <div class="section-label" style="color:${el.color}">目標ステータス</div>
@@ -1871,6 +1965,14 @@ document.addEventListener("click", e=>{
   const pill = e.target.closest(".member-pill.jumpable");
   if(pill){ jumpToCharacter(pill.dataset.jump); return; }
 
+  const videoLink = e.target.closest(".video-link");
+  if(videoLink){
+    const card = videoLink.closest(".card");
+    const charName = card ? card.querySelector("h2").textContent : "";
+    if(typeof gtag==="function") gtag('event','video_click', { character_name: charName });
+    return;
+  }
+
   const toggle = e.target.closest(".details-toggle");
   if(toggle){
     const details = toggle.nextElementSibling;
@@ -1878,6 +1980,11 @@ document.addEventListener("click", e=>{
     details.hidden = !willShow;
     toggle.setAttribute("aria-expanded", String(willShow));
     toggle.querySelector("span").textContent = willShow ? "閉じる" : "詳細を見る(武器・聖遺物・編成)";
+    if(willShow && typeof gtag==="function"){
+      const card = toggle.closest(".card");
+      const charName = card ? card.querySelector("h2").textContent : "";
+      gtag('event','card_details_expand', { character_name: charName });
+    }
   }
 });
 
