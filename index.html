@@ -609,7 +609,7 @@
     </a>
   </div>
   <p>本サイトは、原神の攻略サイトやYouTube解説動画など、インターネット上で一般に公開されている情報をもとに、編集部にて整理・要約したものです。数値やおすすめ装備は各情報が公開された時点のバージョンに基づくため、実際の最新環境とは異なる場合があります。正確な最新情報は必ず各情報源の一次情報をご確認ください。当サイトはゲーム公式運営および参照先の各サイト・チャンネルとは関係のない非公式のファンサイトです。</p>
-  <p>本サイトはアクセス解析のためGoogle Analyticsを使用しており、Cookieを通じて閲覧状況(訪問回数・閲覧ページ・滞在時間・大まかな地域等)を収集しています。個人を特定する情報は収集していません。</p>
+  <p>本サイトはアクセス解析のためGoogle Analyticsを使用しており、Cookieを通じて閲覧状況(訪問回数・閲覧ページ・滞在時間・大まかな地域等)を収集しています。検索欄に入力したキーワードもアクセス解析に含まれます。個人を特定する情報は収集していません。</p>
   <p>各キャラクターの「所持」「凸数」の登録内容は、お使いのブラウザ内(localStorage)にのみ保存され、外部やサーバーには送信されません。ブラウザやデバイスを変えると引き継がれない点にご注意ください。</p>
 </footer>
 
@@ -1911,17 +1911,27 @@ document.getElementById("element-chips").addEventListener("click", e=>{
   const b = e.target.closest(".chip"); if(!b) return;
   state.el = b.dataset.val;
   [...document.getElementById("element-chips").children].forEach(c=>c.setAttribute("aria-pressed", c===b));
+  if(typeof gtag==="function") gtag('event','filter_use',{filter_type:'element', value:b.dataset.val});
   render();
 });
 document.getElementById("weapon-chips").addEventListener("click", e=>{
   const b = e.target.closest(".chip"); if(!b) return;
   state.wp = b.dataset.val;
   [...document.getElementById("weapon-chips").children].forEach(c=>c.setAttribute("aria-pressed", c===b));
+  if(typeof gtag==="function") gtag('event','filter_use',{filter_type:'weapon', value:b.dataset.val});
   render();
 });
+let searchDebounce;
 document.getElementById("search").addEventListener("input", e=>{
   state.q = e.target.value.trim();
   render();
+  clearTimeout(searchDebounce);
+  const term = state.q;
+  if(term){
+    searchDebounce = setTimeout(()=>{
+      if(typeof gtag==="function") gtag('event','site_search',{search_term:term});
+    }, 800);
+  }
 });
 document.getElementById("owned-filter-chip").addEventListener("click", e=>{
   state.ownedOnly = !state.ownedOnly;
