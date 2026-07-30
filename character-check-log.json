@@ -11,8 +11,8 @@
     { "name": "ラウマ", "lastChecked": "2026-07-14" },
     { "name": "イネファ", "lastChecked": "2026-07-15" },
     { "name": "スカーク", "lastChecked": "2026-07-15" },
-    { "name": "マーヴィカ", "lastChecked": "2026-07-13" },
-    { "name": "シトラリ", "lastChecked": "2026-07-13" },
+    { "name": "マーヴィカ", "lastChecked": "2026-07-30" },
+    { "name": "シトラリ", "lastChecked": "2026-07-30" },
     { "name": "シロネン", "lastChecked": "2026-07-15" },
     { "name": "クロリンデ", "lastChecked": "2026-07-15" },
     { "name": "アルレッキーノ", "lastChecked": "2026-07-16" },
@@ -64,8 +64,8 @@
     { "name": "ファルカ", "lastChecked": "2026-07-26" },
     { "name": "コロンビーナ", "lastChecked": "2026-07-26" },
     { "name": "ドゥリン", "lastChecked": "2026-07-26" },
-    { "name": "刻晴", "lastChecked": null },
-    { "name": "セノ", "lastChecked": null },
-    { "name": "シグウィン", "lastChecked": null }
+    { "name": "刻晴", "lastChecked": "2026-07-30" },
+    { "name": "セノ", "lastChecked": "2026-07-30" },
+    { "name": "シグウィン", "lastChecked": "2026-07-30" }
   ]
 }
