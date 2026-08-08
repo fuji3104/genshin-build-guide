@@ -3,11 +3,11 @@
   "entries": [
     { "name": "リンネア", "lastChecked": "2026-07-15" },
     { "name": "サンドローネ", "lastChecked": "2026-07-25" },
-    { "name": "プルーネ", "lastChecked": "2026-07-14" },
-    { "name": "チャスカ", "lastChecked": "2026-07-14" },
+    { "name": "プルーネ", "lastChecked": "2026-08-09" },
+    { "name": "チャスカ", "lastChecked": "2026-08-09" },
     { "name": "ニコ", "lastChecked": "2026-07-25" },
-    { "name": "ネフェル", "lastChecked": "2026-07-14" },
-    { "name": "フリンズ", "lastChecked": "2026-07-14" },
+    { "name": "ネフェル", "lastChecked": "2026-08-09" },
+    { "name": "フリンズ", "lastChecked": "2026-08-09" },
     { "name": "ラウマ", "lastChecked": "2026-07-14" },
     { "name": "イネファ", "lastChecked": "2026-07-15" },
     { "name": "スカーク", "lastChecked": "2026-07-15" },
@@ -71,6 +71,6 @@
     { "name": "ディシア", "lastChecked": "2026-08-01" },
     { "name": "ティナリ", "lastChecked": "2026-08-01" },
     { "name": "ジン", "lastChecked": "2026-08-05" },
-    { "name": "エウルア", "lastChecked": null }
+    { "name": "エウルア", "lastChecked": "2026-08-09" }
   ]
 }
