@@ -261,6 +261,12 @@
     background: var(--surface-2); color: var(--muted);
   }
 
+  .editor-note{
+    margin: 10px 18px 0; padding: 9px 11px; border-radius: 8px;
+    background: var(--surface-2); border-left: 2px solid var(--el, var(--accent));
+    color: var(--text); font-size: 12.5px; line-height: 1.65;
+  }
+
   .card-body{ padding: 14px 18px 6px; display:flex; flex-direction:column; gap: 12px; flex:1; }
   .section-label{
     font-size: 11px; letter-spacing:0.08em; text-transform:uppercase;
@@ -722,6 +728,7 @@ const CH_BASE = "https://www.youtube.com/results?search_query=";
 
 const DATA = [
   { name:"オデット", element:"cryo", weapon:"片手剣", role:"サブアタッカー／サポート(星反応編成の火力サポーター)", release:"Ver7.0 (2026/8)",
+    editorNote:"育成で最初に迷うのは杯の選択で、星反応ダメージには元素ダメージ％バフが乗らないため、氷元素ダメージ杯を選ぶと数字ほど火力が伸びない。攻撃力3000は固有天賦の上限に届く目安なので、そこを超えた分は会心系に回すほうが効率がいい。",
     weapons:[
       {n:"白銀の湖を舞う翼",t:"signature",note:"オデット実装時の限定祈願「氷紗に映る雪鳥の影」で入手できるモチーフ片手剣。会心率22.1%と攻撃力を伸ばし、星反応ダメージと元素エネルギー回復も強化する(効果の維持には8秒ごとに元素スキルを命中させる必要がある)"},
       {n:"導炎の源",t:"f2p",note:"スネージナヤの鍛造で入手できる★4片手剣。元素熟知165に加え、元素反応後に攻撃力+16%、星反応後に星反応ダメージ+16%(装備者が待機中でも発動)"}
@@ -737,6 +744,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=dmZPG7u6PCg", videoTitle:"限定★５「オデット」は強いのか？無凸で解説します。武器/聖遺物/PT編成/凸orモチーフ…全てが分かる！", confirmed:true },
 
   { name:"氷主人公", element:"cryo", weapon:"片手剣", role:"メインアタッカー(星電導反応)／サポート(星拡散反応)", release:"Ver7.0 (2026/8)",
+    editorNote:"祈願を回さずに完凸まで到達できる珍しい★5で、凸も専用武器も魔神任務と氷神の瞳の奉納で無償に揃う。ただし星鋒の剣の会心ダメージ上昇は精錬ランク2以上でしか発動しないため、入手直後の性能だけで判断すると過小評価しやすい。",
     weapons:[{n:"星鋒の剣",t:"signature",note:"魔神任務7章1幕の過程で無料入手できる★5片手剣。会心率33.1%(Lv.90)。旅人装備時のみ、敵に命中で攻撃力+16%(8秒)と元素エネルギー3回復が発動(5秒に1回)。共鳴した元素の数に応じた会心ダメージ上昇(最大+42%)は精錬ランク2以上で発動し、精錬ランク1では発動しない。突破素材は不要で、スネージナヤ各地の七天神像に氷主人公の元素爆発を当てると無料で強化できる。旅人以外が装備しても武器スキルは一切発動しない"}],
     artifact:{main:"影に沈む幻(4セット)",alt:"炉炎溶錬の心(4セット・星拡散編成でサポート運用する場合の代替)"},
     mainStats:"時計:攻撃力％ / 杯:攻撃力％ / 冠:会心ダメージ",
@@ -749,6 +757,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=LcetWPCLe_4", videoTitle:"【原神】冗談抜きで環境最上位になった「氷主人公」完全版性能解説！おすすめ武器、聖遺物、凸についても解説します。【旅人】【VOICEVOX解説】", confirmed:true },
 
   { name:"サンドローネ", element:"cryo", weapon:"両手剣", role:"メインアタッカー(星電導反応)", release:"Ver6.7 (2026/7)",
+    editorNote:"星電導のダメージは氷元素ダメージ％バフの対象外なので、杯に氷元素ダメージを選ぶのは避けたい。攻撃力2300・会心率65%・会心ダメージ260%が揃えば無凸でも主力を張れるが、元素チャージ効率110〜130%を切るとスキル回転が崩れて火力が安定しない。",
     weapons:[{n:"超越の鍵",t:"signature",note:"攻撃力・星電導ダメージを大幅強化"},{n:"タイダル・シャドー",t:"f2p",note:"鍛造で入手できる攻撃力参照型の代替候補"}],
     artifact:{main:"影に沈む幻(4セット)",alt:"金メッキの夢(4セット・影に沈む幻が揃うまでの代用。攻撃力+元素熟知で星電導火力を底上げ)"},
     mainStats:"時計:攻撃力％ / 杯:攻撃力％(氷元素ダメージはNG) / 冠:会心",
@@ -761,6 +770,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=gHbIpoV-z8c", videoTitle:"サンドローネ完全解説！新元素反応「星電導」が強すぎる", confirmed:true },
 
   { name:"ローエン", element:"cryo", weapon:"長柄武器", role:"メインアタッカー(氷元素重撃・溶解反応)", release:"Ver6.6 (2026/6)",
+    editorNote:"重撃を軸にするため、風立ちの日4セットで火力を取るか、氷風を彷徨う勇士4セットで会心率を補うかで組み方が変わる。会心率80%を聖遺物のサブステータスだけで賄えるなら前者、届かないなら後者を選ぶと無理なくまとまる。",
     weapons:[{n:"災憾",t:"signature",note:"攻撃力を大幅に伸ばし、通常攻撃・重撃・スキル・元素爆発のダメージも底上げするモチーフ長柄武器"},{n:"和璞鳶",t:"f2p",note:"恒常武器ながら会心率22.1%を確保でき、攻撃頻度の高いローエンなら効果も発動させやすい代替候補"}],
     artifact:{main:"風立ちの日(4セット)",alt:"氷風を彷徨う勇士(4セット・凍結編成での会心率底上げに有効)"},
     mainStats:"時計:攻撃力％ / 杯:氷元素ダメージ％ / 冠:会心率／会心ダメージ",
@@ -773,6 +783,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=3ox3mgLUbGA", videoTitle:"強化スキルは2回まで「ローエン」パーティー・ビルド・立ち回りガイド", confirmed:true },
 
   { name:"ニコ", element:"pyro", weapon:"法器", role:"サポート(シールド+攻撃力バフ)", release:"Ver6.6 (2026/5)",
+    editorNote:"攻撃力4000は固有バフの上限値なので、そこに届いた後は攻撃力を積んでも味方へのバフは増えない。時計を攻撃力％と元素チャージ効率のどちらにするかは、この上限に届いているかどうかで決めると分かりやすい。",
     weapons:[{n:"塵と光の七つの誓約",t:"signature",note:"攻撃力を大きく伸ばし、シールド発動時のバフ量にも直結するモチーフ武器"},{n:"白辰の輪",t:"f2p",note:"稲妻の世界任務クリアで鍛造できる無償入手可能な代替候補"}],
     artifact:{main:"天からの贈り物(4セット)",alt:"剣闘士のフィナーレ2＋追憶のしめ縄2(代替構成)"},
     mainStats:"時計:攻撃力％ or チャージ効率 / 杯:攻撃力％ / 冠:攻撃力％",
@@ -785,6 +796,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=NLOpK4EPXrQ", videoTitle:"新星5キャラ「ニコ」解説！ベネットの弱点を埋める、攻守万能サポート", confirmed:true },
 
   { name:"プルーネ", element:"anemo", weapon:"法器", role:"サポート／サブアタッカー(拡散ダメージバフ配布)", release:"Ver6.6 (2026/5)",
+    editorNote:"ニコと同じく攻撃力4000が固有バフの上限だが、プルーネは元素チャージ効率150%も同時に要求されるため、聖遺物のサブステータスの取り合いが厳しい。C1でチャージ効率に余裕ができると時計を攻撃力％に寄せられるようになり、そこから完成度が一段上がる。",
     weapons:[{n:"天空の巻",t:"signature",note:"基礎攻撃力・攻撃力％ともにトップクラスの法器で、固有バフの参照元である攻撃力を伸ばしやすい"},{n:"白辰の輪",t:"f2p",note:"稲妻の世界任務クリアで鍛造できる無償入手可能な代替候補。元素チャージ効率を確保しやすい"}],
     artifact:{main:"翠緑の影(4セット)",alt:"天からの贈り物(4セット・魔導秘儀パーティ向け)"},
     mainStats:"時計:攻撃力％ or 元素チャージ効率 / 杯:攻撃力％ / 冠:攻撃力％",
@@ -797,6 +809,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=JqVStfXvW4Y", videoTitle:"「プルーネ」徹底解説 攻撃力4000到達法・武器・聖遺物・編成", confirmed:true },
 
   { name:"リンネア", element:"geo", weapon:"弓", role:"サポート(月結晶反応バフ／回復)", release:"Ver6.5 (2026/4)",
+    editorNote:"必要な元素チャージ効率が編成で大きく変わるのが厄介で、岩元素が自分ひとりなら130〜170%、もう1人いれば110〜140%まで下がる。先に編成を決めてから厳選しないと、要求値を読み違えて無駄な厳選をしやすい。",
     weapons:[{n:"霜契の金枝",t:"signature",note:"防御力と会心ダメージを強化し、岩元素ダメージ・月結晶反応ダメージも底上げするモチーフ弓"},{n:"弾弓",t:"f2p",note:"星3ながら会心率を確保でき、無凸でもモチーフ武器に匹敵する火力を出せる代替候補"}],
     artifact:{main:"暁の星と月の歌(4セット)",alt:"華館夢醒形骸記(4セット・防御力と岩元素ダメージが上昇。暁の星と月の歌が揃うまでの代用としても高水準)"},
     mainStats:"時計:防御力％ / 杯:防御力％ / 冠:会心率／会心ダメージ",
@@ -809,6 +822,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=dSsQou4-fQo", videoTitle:"リンネアを育てていく上で絶対大事なポイントを完全解説！武器の詳細な比較と聖遺物のオプションについてもお話します", confirmed:true },
 
   { name:"ファルカ", element:"anemo", weapon:"両手剣", role:"メインアタッカー(元素コピー型)", release:"Ver6.4 (2026/2)",
+    editorNote:"杯のメインステータスがコピーした元素に依存するため聖遺物の使い回しが効きにくく、編成を固定してから厳選するほうが結局早い。凸の評価もはっきりしていて、C1は必須級・C2は余裕があれば、という順で考えるとよい。",
     weapons:[{n:"狼の武勲詩",t:"signature",note:"会心率と与ダメージバフを同時に得られるモチーフ両手剣。通常/重撃/スキルと多彩な攻撃を行うファルカと相性抜群"},{n:"タイダル・シャドー",t:"f2p",note:"鍛造で入手できる攻撃力特化の代替候補。ヒーラー併用編成で扱いやすい"}],
     artifact:{main:"風立ちの日(4セット)",alt:"ファントムハンター(4セット・フリーナ併用でHP変動を作れる編成向け)"},
     mainStats:"時計:攻撃力％ / 杯:対応元素ダメージ(コピーした元素) / 冠:会心",
@@ -821,6 +835,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=D2vOjsGAi_4", videoTitle:"魔導キャラの追加、待ってます「ファルカ」パーティー・ビルド・立ち回りガイド", confirmed:true },
 
   { name:"しはく", element:"geo", weapon:"片手剣", role:"メインアタッカー(月結晶反応、防御力参照)", release:"Ver6.3 (2026/2)",
+    editorNote:"岩元素キャラだが、月結晶反応のダメージには岩元素ダメージ％が乗らないため杯は防御力％を選ぶ。防御力の目安は情報源によって2000〜2500と幅があるので、まず2000を確保してから会心率70〜80%・会心ダメージ160%以上のバランス調整に移ると手戻りが少ない。",
     weapons:[{n:"三日月の含光",t:"signature",note:"防御力と会心ダメージを強化し、月結晶反応ダメージにも直接バフがかかるモチーフ片手剣"},{n:"黎明の神剣",t:"f2p",note:"★3武器ながら精錬を重ねると高い会心率を確保できる代替候補。専属ヒーラーでHPを高く維持する運用と相性が良い"}],
     artifact:{main:"天穹の顕現せし夜(4セット)",alt:"華館夢醒形骸記(4セット・岩元素攻撃の蓄積で防御力バフを積む代替)"},
     mainStats:"時計:防御力％ / 杯:防御力％(岩元素ダメージ杯は月結晶反応に乗らないため非推奨) / 冠:会心率／会心ダメージ",
@@ -833,6 +848,7 @@ const DATA = [
     video:"https://www.youtube.com/watch?v=aWXoQ9d613Y", videoTitle:"【原神】環境トップ水準の月結晶アタッカー「兹白」パーティー・ビルド・立ち回りガイド", confirmed:true },
 
   { name:"イルーガ", element:"geo", weapon:"長柄武器", role:"サポート(月結晶反応バフ・元素熟知配布)", release:"Ver6.3 (2026/2)",
+    editorNote:"★4ながら月結晶編成の中核を担うが、元素チャージ効率180〜210%と元素熟知700〜800を同時に要求されるため、聖遺物の要求水準は★5級に高い。西風長槍でチャージ効率を稼げばC0でも回せるので、まず武器でこの問題を解いてから熟知を積むと組みやすい。",
     weapons:[{n:"西風長槍",t:"signature",note:"迷ったらこれという基本候補。武器箱産で入手性も良く、一定確率で発生する追加ダメージ効果を持つ長柄武器"},{n:"喜多院十文字槍",t:"f2p",note:"稲妻の鍛造で入手できる代替候補。元素熟知とエネルギー回復を両立でき、無凸〜1凸のチャージ不足を緩和しやすい"}],
     artifact:{main:"月を紡ぐ夜の歌(4セット)",alt:"教官(4セット・2凸未満など月を紡ぐ夜の歌の4セット効果を発動しにくい場合の代替)"},
     mainStats:"時計:元素チャージ効率 / 杯:元素熟知 / 冠:元素熟知",
@@ -1717,6 +1733,7 @@ function card(item){
       </div>
       <div class="el-icon" style="color:${el.color}">${el.icon}</div>
     </div>
+    ${item.editorNote ? `<p class="editor-note">${item.editorNote}</p>` : ""}
     <div class="owned-row" data-name="${item.name}">
       <label class="owned-toggle">
         <input type="checkbox" class="owned-check" ${ownedInfo.owned?'checked':''}>
