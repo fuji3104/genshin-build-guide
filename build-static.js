@@ -18,6 +18,12 @@
  *   このNodeスクリプト側で計算する(card()自体を実行するので手書き簡略版は作らない)。
  * - 生成物は index.html 内のマーカーコメント <!--PRERENDER:START/END--> と
  *   <!--COUNT:START/END--> の間だけを置換する(冪等)。
+ * - 同様に、WebSite/ItemList の構造化データ(JSON-LD)も、従来は実行時に
+ *   document.createElement("script") + document.head.appendChild で注入していたが
+ *   (2026年9月4日にそのIIFEは廃止)、これも同じ「app shell」問題(JS実行前には存在しない)
+ *   だったため、このスクリプトが <head> 内のマーカー <!--JSONLD:START/END--> の間に
+ *   静的な <script type="application/ld+json"> として書き出す。中身(文言・URL・構造)は
+ *   旧実行時注入コードから1文字も変えていない。
  *
  * 使い方: DATA や card() を変更したら、commit前に `node build-static.js` を実行すること。
  * 実行し忘れると、静的プリレンダリングとJSの実際の生成物が乖離してしまう。
@@ -105,18 +111,49 @@ function renderPrerender(appScriptCode) {
   const context = vm.createContext(sandbox);
   // const/letは実行コンテキストのグローバルオブジェクトのプロパティにならないため、
   // 同一スコープ内でvarを使って明示的にエクスポートする。
-  const codeToRun = appScriptCode + "\nvar __EXPORT__ = { DATA: DATA, card: card };\n";
+  const codeToRun = appScriptCode + "\nvar __EXPORT__ = { DATA: DATA, card: card, charId: charId };\n";
   const script = new vm.Script(codeToRun, { filename: "app-script.js" });
   script.runInContext(context);
 
   const exported = context.__EXPORT__;
-  if (!exported || !Array.isArray(exported.DATA) || typeof exported.card !== "function") {
-    throw new Error("DATA または card を実行コンテキストから取り出せませんでした。");
+  if (
+    !exported ||
+    !Array.isArray(exported.DATA) ||
+    typeof exported.card !== "function" ||
+    typeof exported.charId !== "function"
+  ) {
+    throw new Error("DATA / card / charId を実行コンテキストから取り出せませんでした。");
   }
-  const { DATA, card } = exported;
+  const { DATA, card, charId } = exported;
   const gridHtml = DATA.map(card).join("");
   const countText = `${DATA.length} / ${DATA.length} キャラクター`;
-  return { gridHtml, countText, count: DATA.length };
+
+  // --- 構造化データ(JSON-LD): 旧・実行時注入コードのロジックをそのまま移植 ---
+  // (この2つのオブジェクトの中身は1文字も変えていない。置き場所を実行時→静的化しただけ)
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "原神 育成コンパス",
+    "url": "https://genshin.gcompass.net/",
+    "description": "攻略サイトやYouTube解説動画などをもとにした、原神キャラクターの理想ステータス・おすすめ聖遺物・武器・深境螺旋編成まとめ(非公式ファンサイト)",
+    "inLanguage": "ja"
+  };
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "収録キャラクター一覧",
+    "itemListElement": DATA.map((c, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": c.name,
+      "url": "https://genshin.gcompass.net/#" + charId(c.name)
+    }))
+  };
+  const jsonLdHtml = [website, itemList]
+    .map(obj => `<script type="application/ld+json">\n${JSON.stringify(obj)}\n</script>`)
+    .join("\n");
+
+  return { gridHtml, countText, count: DATA.length, jsonLdHtml };
 }
 
 function replaceBetweenMarkers(html, startMarker, endMarker, replacement) {
@@ -133,7 +170,7 @@ function replaceBetweenMarkers(html, startMarker, endMarker, replacement) {
 function main() {
   const html = fs.readFileSync(INDEX_PATH, "utf8");
   const appScriptCode = extractAppScript(html);
-  const { gridHtml, countText, count } = renderPrerender(appScriptCode);
+  const { gridHtml, countText, count, jsonLdHtml } = renderPrerender(appScriptCode);
 
   let updated = html;
   updated = replaceBetweenMarkers(
@@ -147,6 +184,12 @@ function main() {
     "<!--COUNT:START-->",
     "<!--COUNT:END-->",
     countText
+  );
+  updated = replaceBetweenMarkers(
+    updated,
+    "<!--JSONLD:START-->",
+    "<!--JSONLD:END-->",
+    jsonLdHtml
   );
 
   fs.writeFileSync(INDEX_PATH, updated, "utf8");
