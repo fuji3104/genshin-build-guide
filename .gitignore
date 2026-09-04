@@ -1,3 +1,6 @@
 .claude/
 CLAUDE.md
 tmp_*.js
+AGENTS.md
+.agents/
+.codex/
