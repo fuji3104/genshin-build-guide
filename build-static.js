@@ -135,7 +135,7 @@ function renderPrerender(appScriptCode) {
     "@type": "WebSite",
     "name": "原神 育成コンパス",
     "url": "https://genshin.gcompass.net/",
-    "description": "攻略サイトやYouTube解説動画などをもとにした、原神キャラクターの理想ステータス・おすすめ聖遺物・武器・深境螺旋編成まとめ(非公式ファンサイト)",
+    "description": "複数の攻略サイト・YouTube解説動画を突き合わせて検証した、原神キャラクター75体の理想ステータス・おすすめ聖遺物・武器・深境螺旋編成まとめ。会心率や攻撃力の具体的な数値目安つき。(非公式ファンサイト)",
     "inLanguage": "ja"
   };
   const itemList = {
